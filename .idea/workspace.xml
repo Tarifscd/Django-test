@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ef0ef77f-af92-405b-9afa-319406f8e4b3" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1VRC88RxZLInvYxiV6FFMM1D5OK" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ef0ef77f-af92-405b-9afa-319406f8e4b3" name="Default Changelist" comment="" />
+      <created>1577206358399</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1577206358399</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="174" y="54" width="1084" height="712" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1577394875510">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="174" y="54" width="1084" height="712" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.27.1299.741@67.27.1299.741" timestamp="1577394875510" />
+    <state x="399" y="124" width="624" height="544" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1577210285971">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="399" y="124" width="624" height="544" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/67.27.1299.741@67.27.1299.741" timestamp="1577210285971" />
+    <state x="502" y="129" width="424" height="484" key="FileChooserDialogImpl" timestamp="1577640593860">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="502" y="129" width="424" height="484" key="FileChooserDialogImpl/67.27.1299.741@67.27.1299.741" timestamp="1577640593860" />
+    <state x="205" y="31" key="SettingsEditor" timestamp="1577435005377">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="205" y="31" key="SettingsEditor/67.27.1299.741@67.27.1299.741" timestamp="1577435005377" />
+    <state x="372" y="224" key="com.intellij.ide.util.TipDialog" timestamp="1577662103219">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="372" y="224" key="com.intellij.ide.util.TipDialog/67.27.1299.741@67.27.1299.741" timestamp="1577662103219" />
+    <state x="363" y="127" width="707" height="538" key="find.popup" timestamp="1577393958704">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="363" y="127" width="707" height="538" key="find.popup/67.27.1299.741@67.27.1299.741" timestamp="1577393958704" />
+  </component>
+</project>
