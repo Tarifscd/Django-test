@@ -1,0 +1,1606 @@
+{% extends  "base.html" %}
+
+{% block css %}
+    {% include "base-parts/select2_css.html" %}
+    {{ super() }}
+    {% include "base-parts/responsive_datatable_css.html" %}
+    {% include "base-parts/css/date_picket.html" %}
+    <style>
+        form div .form-group .input-group-addon {
+            display: none;
+        }
+    </style>
+
+{% endblock %}
+
+{% block main_header %}
+    {{ super() }}
+{% endblock %}
+
+{% block mb_user_login_info %}
+{% endblock %}
+
+{% block dt_user_login_info %}
+    {{ super() }}
+{% endblock %}
+
+
+{% block content %}
+
+    {{ super() }}
+
+{% endblock %}
+
+{% block banner %}
+    {{ super() }}
+{% endblock %}
+
+{% block inner_content %}
+    <div class="col-md-12">
+        <!-- /.box-header -->
+        <div class="box box-success pos-relative">
+            <div class="box-header ">
+{#                <div class="col-md-2 p-0" style="padding-left: 7px !important;">#}
+{#                    {% if type == 'focal_point' %}#}
+{#                        <h4 class="box-title">Focal Point User List</h4>#}
+{#                    {% elif type == 'admin' %}#}
+{#                        <h4 class="box-title">Admin User List</h4>#}
+{#                    {% elif type == 'other' %}#}
+{#                        <h4 class="box-title">Government User List</h4>#}
+{#                    {% elif type == "all" %}#}
+{#                        <h4 class="box-title">User List</h4>#}
+{#                    {% endif %}#}
+{##}
+{#                </div>#}
+                <!-- /.box-tools -->
+
+                <div class="col-md-10 icon-buttons pull-right" id="crud">
+                    <td>
+                        {#                        <a id="transfer-history-btn"#}
+                        {#                           href="{{ url('lged:transfer_history', id=user.profile.office.id) }}"#}
+                        {#                           class="batch-delete-btn pull-right text-green icon-btn"#}
+                        {#                           data-toggle="tooltip" data-placement="bottom" title="Transfer History"><i#}
+                        {#                                class="fa fa-clock-o"></i>#}
+                        {#                        </a>#}
+                        {#                        <a id="user-transfer-btn"#}
+                        {#                           class="btn disabled batch-delete-btn pull-right text-green icon-btn"#}
+                        {#                           data-toggle="tooltip" data-placement="bottom" title="Transfer User"><i#}
+                        {#                                class="fa fa-send-o"></i>#}
+                        {#                        </a>#}
+{#                        {% if 'password_request' in user_permissions %}#}
+{#                            <a id="password-requests"#}
+{#                               class="btn batch-delete-btn pull-right text-info icon-btn"#}
+{#                               href="{{ url('lged:password_requests') }}"#}
+{#                               data-toggle="tooltip" data-placement="bottom" title="Password Requests">#}
+{#                                <i class="fa fa-share"></i> Password Request History#}
+{#                            </a>#}
+{#                        {% endif %}#}
+                        {% if 'password_request' in user_permissions and type != 'focal_point' and type != 'admin' %}
+                            <a id="request-password"
+                               class="btn disabled batch-delete-btn pull-right text-info icon-btn"
+                               data-toggle="tooltip" data-placement="bottom" title="Request Password">
+                                <i class="fa fa-share-square"></i> Requesttt Password
+                            </a>
+                        {% endif %}
+                        {#                        <a id="user-transfer-history"#}
+                        {#                           class="btn batch-delete-btn pull-right text-info icon-btn"#}
+                        {#                           href="{{ url('lged:transfer_user') }}"#}
+                        {#                           data-toggle="tooltip" data-placement="bottom" title="Transfer History">#}
+                        {#                            <i class="fa fa-list"></i> Transfer History#}
+                        {#                        </a>#}
+                        {% if 'user_transfer' in user_permissions and type != 'focal_point' and type != 'admin' %}
+                            <a id="user-transfer-to-another-office-btn"
+                               class="btn disabled batch-delete-btn pull-right text-blue icon-btn"
+                               data-toggle="tooltip" data-placement="bottom" title="Transfer User">
+                                <i class="fa fa-arrow-left"></i> Transfer
+                            </a>
+                        {% endif %}
+
+                        {% if 'user_transfer' in user_permissions and type != 'focal_point' and type != 'admin' %}
+                            <a id="user-multi-assign-to-other-office-btn"
+                               class="btn disabled batch-delete-btn pull-right text-blue icon-btn"
+                               data-toggle="tooltip" data-placement="bottom" title="User Multiple Assign">
+                                <i class="fa fa-arrow-left"></i> Assign Additional Charge
+                            </a>
+                        {% endif %}
+
+                        {#                        {% if user.profile.office is not none  and user.profile.office.office_category != "LGED HQ" %}#}
+                        {#                            <a id="user-transfer-here-btn"#}
+                        {#                               class="btn batch-delete-btn pull-right text-danger icon-btn"#}
+                        {#                               data-toggle="tooltip" data-placement="bottom" title="Add User">#}
+                        {#                                <i class="fa fa-arrow-right"></i>#}
+                        {#                                Transfer Here#}
+                        {#                            </a>#}
+                        {#                        {% endif %}#}
+                        {% if 'assign_role' in user_permissions and type != 'focal_point' and type != 'admin' %}
+                            <a id="user-role-btn"
+                               class="btn disabled batch-delete-btn pull-right text-danger icon-btn"
+                               data-toggle="tooltip" data-placement="bottom" title="Assign Role"><i
+                                    class="fa fa-signing"></i> Assign Role</a>
+                        {% endif %}
+                        {% if 'user_delete' in user_permissions and type != 'focal_point' and type != 'admin' %}
+                            <a id="user-delete-btn"
+                               class="btn disabled batch-delete-btn pull-right text-danger icon-btn"
+                               data-toggle="tooltip" data-placement="bottom" title="Delete User"><i
+                                    class="fa fa-trash-o"></i> Delete</a>
+                        {% endif %}
+                        {% if 'user_report' in user_permissions %}
+                            <a id="user-column-customization-btn"
+                               class="btn batch-delete-btn pull-right text-info icon-btn"
+                               data-toggle="tooltip" data-placement="bottom" title="Customize Column for Report">
+                                <i class="fa fa-bar-chart"></i> Report
+                            </a>
+                        {% endif %}
+                        {% if 'issue_button' in user_permissions %}
+                            <a id="issue-btn" class="btn disabled batch-issue-btn pull-right text-blue icon-btn"
+                               data-toggle="tooltip" data-placement="bottom" title="Create Issue"><i
+                                    class="fa fa-flag-o"></i> Issue
+                            </a>
+                        {% endif %}
+                        {% if 'user_edit' in user_permissions and type != 'focal_point' and type != 'admin' %}
+                            <a id="user-edit-btn" class="btn disabled batch-delete-btn pull-right text-yellow icon-btn"
+                               data-toggle="tooltip" data-placement="bottom" title="Edit User"><i
+                                    class="fa fa-pencil"></i> Update
+{#                            763459686752434555    22613 #}
+                            </a>
+                        {% endif %}
+                        {% if 'user_add' in user_permissions and type != 'focal_point' and type != 'admin' %}
+                            <a id="user-add-btn"
+                               class="btn batch-delete-btn pull-right text-green icon-btn"
+                               data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fa fa-plus"></i>
+                                Add
+                            </a>
+                            {#                            <a id="floating-user-btn"#}
+                            {#                               class="btn batch-delete-btn pull-right text-green icon-btn"#}
+                            {#                               data-toggle="tooltip" data-placement="bottom" title="Floating Users"><i#}
+                            {#                                    class="fa fa-tencent-weibo"></i>#}
+                            {#                                Floating Users#}
+                            {#                            </a>#}
+                        {% endif %}
+                    </td>
+                </div>
+            </div>
+{#        commonSetDropDownAndSet('/lged/api/v1/designation/?office_id=' + office_id_value, $('select[name="new_designation"]'),#}
+{#               'designation', 'id', '-Select Option-', 'elem', data['designation_id']);#}
+            {% if 'user_admin' in user_permissions %}
+                <div class="col-md-12">
+                    <div class="form-group very-compact-form-group col-md-2">
+                        <label>Org/Institutes</label>
+                        <select class="form-control select2" name="organization" style="width: 100%;">
+                            <option value="">-Select Option-</option>
+                            <option value="LGED">LGED</option>
+                            <option value="LGIS">LGIS</option>
+                            <option value="e-GP LAB">e-GP LAB</option>
+                        </select>
+                    </div>
+                    <div class="form-group very-compact-form-group col-md-2">
+                        <label>Office category</label>
+                        <select name="office_category" class="form-control select2" style="width: 100%;">
+                            <option value="">-Select Option-</option>
+                        </select>
+                    </div>
+                    <div class="form-group very-compact-form-group col-md-2">
+                        <label>Region</label>
+                        <select name="region" class="form-control select2" style="width: 100%;">
+                            <option value="">-Select Option-</option>
+                        </select>
+                    </div>
+                    <div class="form-group very-compact-form-group col-md-2">
+                        <label>District</label>
+                        <select name="district" class="form-control select2" style="width: 100%;">
+                            <option value="">-Select Option-</option>
+                        </select>
+                    </div>
+                    <div class="form-group very-compact-form-group col-md-2">
+                        <label>Office</label>
+                        <select name="office" class="form-control select2" style="width: 100%;">
+                            <option value="">-Select Option-</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-2 very-compact-form-group">
+                        <label>Name (Eng)</label>
+                        <input name="name_adv" type="text" class="form-control">
+                    </div>
+                    <div class="form-group col-md-2 very-compact-form-group">
+                        <label>Name (Bang)</label>
+                        <input name="bang_name_adv" type="text" class="form-control">
+                    </div>
+                    <div class="form-group very-compact-form-group col-md-2">
+                        <label>Designation</label>
+                        <select name="designation_adv" class="form-control select2" style="width: 100%;">
+                            <option value="">-Select Option-</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2 very-compact-form-group">
+                        <label>Mobile (Personal)</label>
+                        <input name="mobile_no_adv" type="text" class="form-control">
+                    </div>
+                    <div class="form-group col-md-2 very-compact-form-group">
+                        <label>Mobile (Official)</label>
+                        <input name="off_mobile_no_adv" type="text" class="form-control">
+                    </div>
+                    <div class="form-group col-md-2 very-compact-form-group">
+                        <label>Email (Official)</label>
+                        <input name="off_email_adv" type="text" class="form-control">
+                    </div>
+                    <div class="form-group col-md-2 very-compact-form-group">
+                        <label>Email (Personal)</label>
+                        <input name="email_adv" type="text" class="form-control">
+                    </div>
+                    <div class="form-group col-md-2 very-compact-form-group">
+                        <label>NID</label>
+                        <input name="nid_adv" type="text" class="form-control">
+                    </div>
+                    <div class="form-group very-compact-form-group col-md-2">
+                        <label>Gender</label>
+                        <select name="gender_adv" class="form-control select2" style="width: 100%;">
+                            <option value="">-Select Option-</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group very-compact-form-group col-md-2">
+                        <label>PPR Training</label>
+                        <select name="ppr_training_adv" class="form-control select2" style="width: 100%;">
+                            <option value="">-Select Option-</option>
+                            <option value="True">Yes</option>
+                            <option value="False">No</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2 very-compact-form-group" style="display: none;">
+                        <label>e-GP ID (LGED)</label>
+                        <input name="e_gp_id_lged_adv" type="text" class="form-control">
+                    </div>
+                    <div class="form-group col-md-2 very-compact-form-group" style="display: none">
+                        <label>e-GP ID (LGI)</label>
+                        <input name="e_gp_id_lgi_adv" type="text" class="form-control">
+                    </div>
+
+                    <div class="form-group very-compact-form-group col-md-2">
+                        <label>From:</label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input name="updated_at_from" class="form-control pull-right"
+                                   id="updated_at_from">
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <div class="form-group very-compact-form-group col-md-2">
+                        <label>To:</label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input name="updated_at_to" class="form-control pull-right"
+                                   id="updated_at_to">
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+
+                    <div class="form-group col-md-1 very-compact-form-group">
+                        <label>Reset</label>
+                        <button type="button" id="reset_filter" class="btn btn-warning form-control">RESET</button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h4>Toggle column</h4>
+                    <label>Report for: </label>
+                    <select class="form-control select2" id="user_report">
+                        <option value="">-Select Option-</option>
+                    </select>
+                </div>
+                <div class="row col-md-12 dynamic-col-holder">
+                    <div class="col-md-12">
+                        <br>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="0">SL</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="1">Office Name</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="2">Division</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="3">Region</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="4">District</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="5">Upazila</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="6">Picture</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="7">Name (English)</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="8">Name (Bangla)</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="9">Designation</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="10">Personal
+                            Mobile No</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="11">Official
+                            Mobile No</a>
+                        {% if type ==  'focal_point' %}
+                            <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="12">User ID
+                                for Pro Info</a>
+                        {% endif %}
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="13">Official Email</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="14">Personal Email</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="15">NID</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="16">Gender</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="17">Date of Birth</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="18">PPR Training
+                            Attendance</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="19">For LGED
+                            Tenders</a>
+                        <a class="toggle-vis btn custom-toggle-btn btn-xs" href="#" data-column="20">For LGI Tenders</a>
+                    </div>
+                </div>
+            {% endif %}
+            <!-- /.box-body -->
+            <div class="box-body">
+                <div class="imp_user_table_holder">
+                    <table id="imp_user_list_table" class="table table-bordered table-striped" style="display: none;">
+                        <thead>
+                        <tr class="tr-text-center">
+                            <th class="th-center-text">SL</th>
+                            <th class="th-center-text" style="width: 100px;">Office Name</th>
+                            <th class="th-center-text">Division</th>
+                            <th class="th-center-text">Region</th>
+                            <th class="th-center-text">District</th>
+                            <th class="th-center-text">Upazila</th>
+                            <th class="th-center-text">Picture</th>
+                            <th class="th-center-text">Name (English)</th>
+                            <th class="th-center-text">Name (Bangla)</th>
+                            <th class="th-center-text" style="width: 120px;">Designation</th>
+                            <th class="th-center-text">Personal<br>Mobile No</th>
+                            <th class="th-center-text">Official<br>Mobile No</th>
+                            <th class="th-center-text">Official Email</th>
+                            <th class="th-center-text">Personal Email</th>
+                            <th class="th-center-text">NID</th>
+                            <th class="th-center-text">Gender</th>
+                            <th class="th-center-text">Date of Birth</th>
+                            <th class="th-center-text" style="max-width: 280px;">For LGED Tenders</th>
+                            <th class="th-center-text" style="max-width: 280px;">For LGI Tenders</th>
+                            <th class="th-center-text" style="width: 180px">Training History</th>
+                            <th class="th-center-text">Audit Trail</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div id="user-list-table-holder">
+
+                    <div class="col-md-2 p-0" style="padding-left: 7px !important; color:#D03211; ">
+                        {% if type == 'focal_point' %}
+                            <h4 class="box-title">Focal Point User List</h4>
+                        {% elif type == 'admin' %}
+                            <h4 class="box-title">Admin User List</h4>
+                        {% elif type == 'other' %}
+                            <h4 class="box-title" >Government User List</h4>
+                        {% elif type == "all" %}
+                            <h4 class="box-title">User List</h4>
+                        {% endif %}
+                    </div>
+
+                    <span class="col-md-12 p-0" id="search_users" style="display: none; padding-left: 10px;"></span>
+                    <table id="user_list_table" class="table table-bordered table-striped">
+                        <thead>
+                        <tr class="tr-text-center">
+                            <th class="th-center-text">SLllll</th>
+                            <th class="th-center-text" style="width: 100px;">Office Name</th>
+                            <th class="th-center-text">Division</th>
+                            <th class="th-center-text">Region</th>
+                            <th class="th-center-text">District</th>
+                            <th class="th-center-text">Upazila</th>
+                            <th class="th-center-text">Picture</th>
+                            <th class="th-center-text">Name (English)</th>
+                            <th class="th-center-text">Name (Bangla)</th>
+                            <th class="th-center-text" style="width: 120px;">Designation</th>
+                            <th class="th-center-text">Personal<br>Mobile No</th>
+                            <th class="th-center-text">Official<br>Mobile No</th>
+                            <th class="th-center-text">User ID for Pro Info</th>
+                            <th class="th-center-text">Official Email</th>
+                            <th class="th-center-text">Personal Email</th>
+                            <th class="th-center-text">NID</th>
+                            <th class="th-center-text">Gender</th>
+                            <th class="th-center-text">Date of Birth</th>
+                            <th class="th-center-text">PPR Training <br>Attendance</th>
+                            <th class="th-center-text" style="max-width: 280px;">For LGED Tenders</th>
+                            <th class="th-center-text" style="max-width: 280px;">For LGI Tenders</th>
+                            <th class="th-center-text no-print" style="width: 180px;">Training <br>History</th>
+                            <th class="th-center-text no-print">Audit Trail</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            <br><br>
+                {% if type == 'other' %}
+
+                        <a id="additional-user-delete-btn"
+                           class="btn disabled batch-delete-btn pull-right text-danger icon-btn"
+                           data-toggle="tooltip" data-placement="bottom" title="Delete User"><i
+                                class="fa fa-trash-o"></i> Remove</a>
+                        <div id="user-list-table-holder">
+
+                        <div class="col-md-2 p-0" style="padding-left: 7px !important; color:#D03211;">
+                            <h4 class="box-title">Users in Additional Charge</h4>
+                        </div>
+                            <span class="col-md-12 p-0" id="search_temporary_users"
+                                  style="display: none; padding-left: 10px;"></span>
+
+                            <table id="user_list_temp_office_table" class="table table-bordered table-striped">
+
+                                <thead>
+                                <tr class="tr-text-center">
+                                    <th class="th-center-text">SL</th>
+                                    <th class="th-center-text" style="width: 100px;">Office Name</th>
+                                    <th class="th-center-text">Division</th>
+                                    <th class="th-center-text">Region</th>
+                                    <th class="th-center-text">District</th>
+                                    <th class="th-center-text">Upazila</th>
+                                    <th class="th-center-text">Picture</th>
+                                    <th class="th-center-text">Name (English)</th>
+                                    <th class="th-center-text">Name (Bangla)</th>
+                                    <th class="th-center-text" style="width: 120px;">Designation</th>
+                                    <th class="th-center-text">Personal<br>Mobile No</th>
+                                    <th class="th-center-text">Official<br>Mobile No</th>
+                                    {#                            <th class="th-center-text">User ID for Pro Info</th>#}
+                                    <th class="th-center-text">Official Email</th>
+                                    <th class="th-center-text">Personal Email</th>
+                                    <th class="th-center-text">NID</th>
+                                    <th class="th-center-text">Gender</th>
+                                    <th class="th-center-text">Date of Birth</th>
+                                    <th class="th-center-text">PPR Training <br>Attendance</th>
+                                    <th class="th-center-text" style="max-width: 280px;">For LGED Tenders</th>
+                                    <th class="th-center-text" style="max-width: 280px;">For LGI Tenders</th>
+                                    <th class="th-center-text no-print" style="width: 180px;">Training <br>History</th>
+                                    <th class="th-center-text no-print">Audit Trail</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="modal fade" id="user-transfer-modal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"> Transfer Here</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box-body">
+                            <div class="form-group very-compact-form-group col-md-4">
+                                <label for="inputEmail3">NID</label>
+                                <div class="">
+                                    <input type="number" class="form-control" id="nid_search">
+                                </div>
+                            </div>
+                            <div class="form-group very-compact-form-group col-md-4">
+                                <label>Date of Birth</label>
+                                <div class="date">
+                                    <input id="date_of_birth_search" class="form-control pull-right">
+                                </div>
+                            </div>
+                            <div class="form-group very-compact-form-group col-md-4">
+                                <label for="inputEmail3">Personal Mobile No.</label>
+                                <div class="">
+                                    <input type="text" class="form-control" id="mobile_no_search"
+                                    >
+                                </div>
+                                <hr>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="pull-right col-md-12">
+                            <button type="button" id="transfer-here-btn" class="btn custom-reset-btn">Transfer
+                            </button>
+                            |
+                            <button type="button" class="btn custom-reset-btn" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="user-update-modal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+{#                        {% if type == 'focal_point' %}#}
+                            <h4 class="modal-title" style="font-family: Kalpurush; color: black"><b><span id="designation_name" style="color: #F9E02B"></span></b> এর তথ্য আপডেট সংক্রান্ত ফর্ম</h4>
+{#                        {% elif type == 'admin' %}#}
+{#                            <h4 class="modal-title"> Update Admin User Information</h4>#}
+{#                        {% elif type == 'other' %}#}
+{#                            <h4 class="modal-title"> Update Government User Information</h4>#}
+{#                        {% elif type == "all" %}#}
+{#                            <h4 class="modal-title"> Update User Information</h4>#}
+{#                        {% else %}#}
+{#                            <h4 class="modal-title"> Update Focal Point User Information</h4>#}
+{#                        {% endif %}#}
+
+                    </div>
+                    <form role="form" id="update-profile-form" enctype="multipart/form-data"
+                          data-parsley-validate>
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
+                        <input type="hidden" name="password" value=""/>
+                        <div class="modal-body">
+                            <div class="box-body">
+                                {% if 'user_admin' in user_permissions and 'user_edit' in user_permissions %}
+                                    <div class="new-border-box row col-md-12">
+                                        <div class="form-group very-compact-form-group col-md-4">
+                                            <label>Org/Institutes</label>
+                                            <select class="form-control select2" id="update_user_org"
+                                                    style="width: 100%;">
+                                                <option value="">-Select Option-</option>
+                                                <option value="LGED">LGED</option>
+                                                <option value="LGIS">LGIS</option>
+                                                <option value="e-GP LAB">e-GP LAB</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-4 update-office-category-holder">
+                                            <label>Office category</label>
+                                            <select class="form-control select2" id="update_user_off_cat"
+                                                    style="width: 100%;">
+                                                <option value="">-Select Option-</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-4">
+                                            <label>Office</label>
+                                            <select class="form-control select2"
+                                                    data-parsley-errors-container="#update_user_office_error"
+                                                    name="update_user_office" id="update_user_office"
+                                                    style="width: 100%;"
+                                                    data-parsley-required>
+                                                <option value="">-Select Option-</option>
+                                            </select>
+                                            <span id="update_user_office_error"></span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="new-border-box row col-md-12">
+                                    <div class="row col-md-12">
+                                        <div class="form-group very-compact-form-group col-md-4 required_field">
+                                            <label for="inputEmail3" style="font-family: Kalpurush">নাম (English) </label>
+
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                                <input type="text" class="form-control" name="first_name"
+                                                       data-parsley-pattern="/^[-@./#&+\w\s]*$/"
+                                                       data-required-message="This field is required"
+                                                       data-parsley-error-message="ইংরেজিতে টাইপ করুন ।"
+                                                       data-parsley-errors-container="#first_name_update_error">
+                                            </div>
+                                            <span id="first_name_update_error" class="text-red"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-4">
+                                            <label for="inputEmail3" style="font-family: Kalpurush">নাম (বাংলা)</label>
+
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                                <input type="text" class="form-control" name="bengali_name"
+                                                       data-parsley-pattern="/^[-@./#&+\su'\u0980-\u09FF']*$/"
+                                                       data-required-message="This field is required"
+                                                       data-parsley-error-message="বাংলায় টাইপ করুন ।"
+                                                       data-parsley-errors-container="#bengali_name_update_error">
+                                            </div>
+                                            <span id="bengali_name_update_error" class="text-red"></span>
+                                        </div>
+                                        {% if 'user_admin' in user_permissions %}
+                                            <div class="form-group very-compact-form-group col-md-4">
+                                                <label for="inputEmail3">User ID for Pro Info</label>
+                                                <div class="">
+                                                    <input type="email" class="form-control" name="email"
+                                                           data-parsley-errors-container="#login_id_update_error">
+                                                </div>
+                                                <span id="login_id_update_error" class="text-red"></span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+{#                                    <div class="row col-md-12">#}
+                                    <div>
+                                        <div class="form-group very-compact-form-group col-md-3 required_field"
+                                             id="nid_edit">
+                                            <label for="inputEmail3">NID</label>
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-code"></i>
+                                                </div>
+                                                <!-- -->
+                                                <input type="text" class="form-control" name="nid" data-parsley-required
+                                                       data-parsley-type="digits" data-parsley-maxlength="19"
+                                                       data-parsley-minlength="10"
+                                                       data-parsley-maxlength-message="NID number can be max 19 digits long"
+                                                       data-parsley-minlength-message="NID number should be min 10 digits long"
+                                                       data-parsley-type-message="NID number should be English numeric."
+                                                       data-parsley-errors-container="#nid_update_error"
+                                                >
+                                            </div>
+                                            <span id="nid_update_error"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group required_field col-md-3">
+                                            <label>Gender</label>
+                                            <select class="form-control select2" data-parsley-required
+                                                    name="gender"
+                                                    style="width: 100%;" data-parsley-errors-container="#gender_error1">
+                                                <option value="">-Select Option-</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                            <span id="gender_error1"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-3 required_field" id="date_of_birth_edit">
+                                            <label style="font-family: Kalpurush">জন্ম তারিখ</label>
+                                            <div class="date">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input name="date_of_birth" class="form-control pull-right"
+                                                       autocomplete="off"
+                                                       id="date_of_birth_update" data-parsley-required
+                                                       data-parsley-errors-container="#date_of_birth_update_error">
+                                            </div>
+                                            <span id="date_of_birth_update_error"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-3 required_field">
+                                            <label for="inputEmail3" style="font-family: Kalpurush">ব্যক্তিগত মোবাইল নম্বর</label>
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-phone"></i>
+                                                </div>
+                                                <input type="text" class="form-control" name="mobile_no" id="p_mobile_no"
+                                                       data-parsley-type="digits"
+                                                       data-parsley-required=""
+                                                       data-parsley-maxlength="11" data-parsley-minlength="11"
+                                                       data-parsley-maxlength-message="Mobile number should be 11 digits long"
+                                                       data-parsley-minlength-message="Mobile number should be 11 digits long"
+                                                       data-parsley-type-message="Mobile number should be English numeric."
+                                                       data-parsley-errors-container="#mobile_no_error">
+                                            </div>
+                                            <span id="mobile_no_error" class="text-red"></span>
+                                        </div>
+{#                                    </div>#}
+{#                                    <div class="row col-md-12">#}
+                                        <div class="form-group very-compact-form-group col-md-3 required_field">
+                                            <label style="font-family: Kalpurush">পদবী</label>
+                                            <!-- -->
+                                            <select class="form-control select2" name="designation" style="width: 100%;"
+                                                    data-parsley-required=""
+                                                    data-parsley-errors-container="#desig_error"
+                                                    tabindex="-1">
+                                                <option selected="selected" value="">-Select Option-</option>
+                                            </select>
+                                            <span id="desig_error"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-3">
+                                            <label for="inputEmail3" style="font-family: Kalpurush">ব্যক্তিগত ইমেইল</label>
+
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-envelope"></i>
+                                                </div>
+                                                <input type="email" class="form-control" name="personal_email" id="per_email"
+                                                       data-parsley-errors-container="#personal_email_update_error">
+                                            </div>
+                                            <span id="personal_email_update_error" class="text-red"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-3">
+                                            <label for="inputEmail3" id="official_email_label_update" style="font-family: Kalpurush">অফিসিয়াল ইমেইল</label>
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-envelope"></i>
+                                                </div>
+                                                <input type="email" class="form-control fixed-form"
+                                                       name="official_email" id="fixed-off-email"
+                                                       data-parsley-notequalto="#per_email"
+                                                       data-parsley-notequalto-message="ব্যক্তিগত ইমেইল আইডি এবং অফিসিয়াল ইমেইল আইডি অবশ্যই ভিন্ন হতে হবে !" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-3">
+                                            <label for="inputEmail3" style="font-family: Kalpurush">অফিসিয়াল মোবাইল নম্বর</label>
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-phone"></i>
+                                                </div>
+                                                <input type="text" class="form-control" name="official_mobile_no" id="o_mobile_no"
+                                                       data-parsley-type="digits"
+                                                       data-parsley-notequalto="#p_mobile_no"
+                                                       data-parsley-notequalto-message="অফিসিয়াল মোবাইল নম্বর এবং ব্যক্তিগত মোবাইল নম্বর অবশ্যই ভিন্ন হতে হবে !"
+                                                       data-parsley-maxlength="11" data-parsley-minlength="11"
+                                                       data-parsley-maxlength-message="Mobile number should be 11 digits long"
+                                                       data-parsley-minlength-message="Mobile number should be 11 digits long"
+                                                       data-parsley-type-message="Mobile number should be English numeric."
+                                                       data-parsley-errors-container="#off_mobile_error">
+                                            </div>
+                                            <span id="off_mobile_error" class="text-red"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="proc-role-div">
+                                    <div class="new-border-box row col-md-12" id="proc-role-lged-div">
+                                        <div class="form-group very-compact-form-group col-md-12"
+                                             id="update-proc-role-lged-holder" style="display: block;">
+{#                                            <label>Procurement Role of <span style="color: #3bb17b">LGED Tenders</span></label>#}
+                                            <label>Procurement Role of <span style="color: #D03211">LGED Tenders</span></label>
+
+                                            <select class="form-control select2" multiple="multiple"
+                                                    name="update_procurement_roles" tabindex="-1"
+                                                    style="width: 100%;">
+                                            </select>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-4"
+                                             id="update-e-gp-id-govt-lged-holder" tabindex="-1"
+                                             style="display: none;">
+                                            <label for="inputEmail3">e-GP id for Govt. User (<span
+                                                    style="color: #D03211">LGED Tender</span>)</label>
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-code"></i>
+                                                </div>
+                                                <input type="email" class="form-control"
+                                                       id="e_gp_user_id_govt_for_update"
+                                                       data-parsley-error-message="This value should be a valid e-GP ID"
+                                                       name="e_gp_user_id_for_govt">
+                                            </div>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-4"
+                                             id="update-e-gp-id-org-admin-lged-holder"
+                                             style="display: none;">
+                                            <label for="inputEmail3">e-GP id for Org. Admin User (<span
+                                                    style="color: #D03211">LGED Tender</span>)</label>
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-code"></i>
+                                                </div>
+                                                <input type="email" class="form-control"
+                                                       id="e_gp_user_id_org_admin_for_update"
+                                                       data-parsley-error-message="This value should be a valid e-GP ID"
+                                                       tabindex="-1"
+                                                       name="e_gp_user_id_for_org_admin">
+                                            </div>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-4"
+                                             id="update-e-gp-id-pe-admin-lged-holder"
+                                             style="display: none;">
+                                            <label for="inputEmail3">e-GP id for PE Admin (<span style="color: #D03211">LGED Tender</span>)</label>
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-code"></i>
+                                                </div>
+                                                <input type="email" class="form-control"
+                                                       id="e_gp_user_id_pe_admin_for_update" tabindex="-1"
+                                                       data-parsley-error-message="This value should be a valid e-GP ID"
+                                                       name="e_gp_user_id_for_pe_admin">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="new-border-box row col-md-12">
+                                        <div class="form-group very-compact-form-group col-md-12"
+                                             id="update-proc-role-lgi-holder"
+                                             style="display: none;">
+                                            <label>Procurement Role For <span style="color: #D03211">LGIs Tenders</span></label>
+                                            <select class="form-control select2" multiple="multiple"
+                                                    name="update_procurement_roles_lgis"
+                                                    data-parsley-errors-container="#p_role_error_lgis"
+                                                    style="width: 100%;" tabindex="-1">
+                                            </select>
+                                            <span id="p_role_error_lgis"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-4"
+                                             id="update-e-gp-id-govt-lgis-holder"
+                                             style="display: none;">
+                                            <label for="inputEmail3">e-GP id for Govt. User (<span
+                                                    style="color: #D03211">LGIs Tender</span>)</label>
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-code"></i>
+                                                </div>
+                                                <input type="email" class="form-control"
+                                                       id="e_gp_user_id_govt_lgis_for_update"
+                                                       data-parsley-error-message="This value should be a valid e-GP ID"
+                                                       name="e_gp_user_id_lgis_for_govt" tabindex="-1">
+                                            </div>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-4"
+                                             id="update-e-gp-id-org-admin-lgis-holder"
+                                             style="display: none;">
+                                            <label for="inputEmail3">e-GP id for Org. Admin (<span
+                                                    style="color: #D03211">LGIs Tender</span>)</label>
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-code"></i>
+                                                </div>
+                                                <input type="email" class="form-control"
+                                                       id="e_gp_user_id_org_admin_lgis_for_update"
+                                                       data-parsley-error-message="This value should be a valid e-GP ID"
+                                                       name="e_gp_user_id_lgis_for_org_admin" tabindex="-1">
+                                            </div>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-4"
+                                             id="update-e-gp-id-pe-admin-lgis-holder"
+                                             style="display: none;">
+                                            <label for="inputEmail3">e-GP id for PE Admin (<span style="color: #D03211">LGIs Tender</span>)</label>
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-code"></i>
+                                                </div>
+                                                <input type="email" class="form-control"
+                                                       id="e_gp_user_id_pe_admin_lgis_for_update"
+                                                       data-parsley-error-message="This value should be a valid e-GP ID"
+                                                       name="e_gp_user_id_lgis_for_pe_admin" tabindex="-1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="new-border-box row col-md-12">
+                                    {% if 'user_admin' in user_permissions %}
+                                        <div class="form-group very-compact-form-group col-md-12" id="password_changing_condition">
+                                            <div class="form-group very-compact-form-group col-md-4">
+                                                <label for="inputEmail3">Password changing condition: </label>
+                                            </div>
+                                            <div class="form-group very-compact-form-group col-md-10">
+                                                <input type="radio" name="pass_condition" id="just_reset" value="pass reset">
+                                                <span class="checkmark">Just Reset the Password</span>
+                                                <input type="radio" name="pass_condition" id="fully_reset" value="fully reset">
+                                                <span class="checkmark">Fully Reset with Password</span>
+                                                <input type="radio" name="pass_condition" id="not_reset" value="not reset">
+                                                <span class="checkmark">Not Reset</span>
+
+                                                <span id="office_cat_error" class="text-red"></span>
+                                            </div>
+                                        </div>
+                                        <div id="password_option_showing" style="display: none;">
+                                        <div class="form-group very-compact-form-group col-md-6">
+                                            <label>New Password</label>
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-key"></i>
+                                                </div>
+                                                <input type="password" id="update_new_password" class="form-control"
+                                                       name="password"
+                                                       data-parsley-errors-container="#new_pass_error">
+                                            </div>
+                                            <span id="new_pass_error" class="text-red"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-6">
+                                            <label>Confirm New Password</label>
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-key"></i>
+                                                </div>
+                                                <input type="password" class="form-control"
+                                                       data-parsley-equalto="#update_new_password"
+                                                       data-parsley-errors-container="#confirm_pass_error">
+                                            </div>
+                                            <span id="confirm_pass_error" class="text-red"></span>
+                                        </div>
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-group very-compact-form-group col-md-4">
+                                        <label>Photo</label>
+                                        <input type="file" accept="image/*" id="avatar" name="avatar">
+                                        <button type="button" onclick="remove_file('avatar')">
+                                            <i class="fa fa-trash-o"> Cancel</i>
+                                        </button>
+                                        <p class="help-block">Please upload an image not larger than
+                                            2MB.</p>
+                                    </div>
+                                    <div id="ppr_training_div_update">
+                                        <div class="form-group very-compact-form-group col-md-4">
+                                            <label style="font-family: Kalpurush">৩ সপ্তাহের “PPR Training by CPTU” করেছেন কিনা ?<span
+                                                    style="color: red">*</span></label>
+                                            <p>
+                                                <input type="radio" id="yes_update" value="True"
+                                                       name="PPR_training">&nbsp;Yes&nbsp;&nbsp;
+                                                <input type="radio" id="no_update" value="False"
+                                                       name="PPR_training" required>&nbsp;No
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div id="ppr_training_update">
+                                        <div class="form-group very-compact-form-group col-md-2"
+                                             id="start_date_update_div">
+                                            <label>Start Date</label>
+                                            <input type="text" autocomplete="off"
+                                                   name="start_date" class="form-control date">
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-2" id="venue_update_div">
+                                            <label>Venue</label>
+                                            <select class="form-control select2" style="width: 100%" id="venue_update"
+                                                    name="venue"
+                                                    data-parsley-errors-container="#venue_update_error">
+                                                <option value="">-Select Option-</option>
+                                            </select>
+                                            <span id="venue_update_error"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-3">
+                                            <label>Certificate</label>
+                                            <input type="file" name="certificate" id="certificate_for_training_update">
+                                            <button type="button"
+                                                    onclick="remove_file('certificate_for_training_update')">
+                                                <i class="fa fa-trash-o"> Cancel</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="last_name" value="">
+                        </div>
+
+                        <div class="modal-footer">
+                            <div class="pull-right col-md-12">
+                                <button type="reset" class="btn custom-reset-btn" id="update-user-reset-btn">Reset
+                                </button>
+                                |
+                                <button type="submit" class="btn custom-submit-btn profile_update">Submit</button>
+                                |
+                                <button type="button" class="btn close-btn custom-reset-btn" data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="additional-user-delete-modal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"> Remove Additional User</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box-body">
+                            <p>Are you sure to remove the selected row from the database? </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="pull-right col-md-12">
+
+                            <button type="submit" class="btn custom-submit-btn profile_update"
+                                    id="confirm-del-additional-user-btn">Yes
+                            </button>
+
+                            <button type="reset" class="btn custom-no-btn" id="cancel-del-additional-user-btn">No
+                            </button>
+                            |
+
+                            |
+                            <button type="button" class="btn close-btn custom-reset-btn" data-dismiss="modal">Close
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="user-add-modal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"> Add user</h4>
+                    </div>
+                    <form role="form" id="add-user-form" action="" method="post" data-parsley-validate>
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
+                        <div class="modal-body">
+                            <div class="box-body">
+                                {% if 'user_admin' in user_permissions and 'user_edit' in user_permissions %}
+                                    <div class="row col-md-12 new-border-box">
+                                        <div class="form-group col-md-4 very-compact-form-group">
+                                            <label>Org/Institutes</label>
+                                            <select class="form-control select2" id="add_user_org" style="width: 100%;">
+                                                <option value="">-Select Option-</option>
+                                                <option value="LGED">LGED</option>
+                                                <option value="LGIS">LGIS</option>
+                                                <option value="e-GP LAB">e-GP LAB</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4 add-office-category-holder very-compact-form-group">
+                                            <label>Office category</label>
+                                            <select class="form-control select2" id="add_user_off_cat"
+                                                    style="width: 100%;">
+                                                <option value="">-Select Option-</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4 very-compact-form-group required_field">
+                                            <label>Office</label>
+                                            <select class="form-control select2"
+                                                    data-parsley-errors-container="#add_user_error"
+                                                    data-parsley-required
+                                                    name="add_user_office" id="add_user_office"
+                                                    style="width: 100%;">
+                                                <option value="">-Select Option-</option>
+                                            </select>
+                                            <span id="add_user_error"></span>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <input type="hidden" name="office" value="{{ user.profile.office.id }}">
+                                {% endif %}
+                                <div class="row col-md-12 new-border-box">
+                                    <div class="row col-md-12">
+                                        <div class="form-group very-compact-form-group col-md-4">
+                                            <label for="inputEmail3" style="font-family: Kalpurush">নাম (English)</label>
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                                <input type="text" class="form-control" name="first_name"
+                                                       data-parsley-pattern="/^[-@./#&+\w\s]*$/"
+{#                                                       data-required-message="This field is required"#}
+                                                       data-parsley-error-message="This field should be English only"
+                                                       data-parsley-errors-container="#first_name_error"
+{#                                                       data-parsley-required=""#}>
+                                            </div>
+                                            <span id="first_name_error" class="text-red"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-4">
+                                            <label for="inputEmail3" style="font-family: Kalpurush">নাম (বাংলা)</label>
+
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                                <input type="text" class="form-control" name="bengali_name"
+                                                       data-parsley-pattern="/^[-@./#&+\su'\u0980-\u09FF']*$/"
+                                                       data-required-message="This field is required"
+                                                       data-parsley-error-message="This field should be Bangla only"
+                                                       data-parsley-errors-container="#bengali_name_error">
+                                            </div>
+                                            <span id="bengali_name_update_error" class="text-red"></span>
+                                        </div>
+                                        {% if 'user_admin' in user_permissions %}
+                                            <div class="form-group very-compact-form-group col-md-4">
+                                                <label for="inputEmail3">User ID for Pro Info</label>
+                                                <div class="">
+                                                    <input type="email" class="form-control" name="email"
+                                                           data-parsley-errors-container="#user_id_error">
+                                                </div>
+                                                <span id="user_id_error" class="text-red"></span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="row col-md-12">
+                                        <div class="form-group very-compact-form-group col-md-3">
+                                            <label for="inputEmail3">NID</label>
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                                <input type="text" class="form-control" name="nid_value"
+{#                                                       data-parsley-required#}
+                                                       data-parsley-type="digits" data-parsley-maxlength="19"
+                                                       data-parsley-minlength="10"
+                                                       data-parsley-maxlength-message="NID number can be max 19 digits long"
+                                                       data-parsley-minlength-message="NID number should be min 10 digits long"
+                                                       data-parsley-type-message="NID number should be English numeric."
+                                                       data-parsley-errors-container="#nid_error">
+                                            </div>
+                                            <span id="nid_error" class="text-red"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-3">
+                                            <label>Gender</label>
+                                            <select class="form-control select2"
+{#                                                    data-parsley-required#}
+                                                    name="gender"
+                                                    style="width: 100%;" data-parsley-errors-container="#gender_error">
+                                                <option value="">-Select Option-</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                            <span id="gender_error"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-3">
+                                            <label style="font-family: Kalpurush">জন্ম তারিখ</label>
+                                            <div class="date">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input name="date_of_birth" class="form-control pull-right"
+                                                       style="width: 100%" autocomplete="off"
+                                                       id="date_of_birth_add"
+{#                                                       data-parsley-required#}
+                                                       data-parsley-errors-container="#date_of_birth_error">
+                                            </div>
+                                            <span id="date_of_birth_error"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-3">
+                                            <label for="inputEmail3" style="font-family: Kalpurush">ব্যক্তিগত মোবাইল নম্বর</label>
+
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-phone"></i>
+                                                </div>
+                                                <input type="text" class="form-control" name="mobile_no"
+{#                                                       placeholder="Example: 01919122334"#}
+{#                                                       data-parsley-required=""#}
+                                                       data-parsley-type="digits" data-parsley-maxlength="11"
+                                                       data-parsley-minlength="11"
+                                                       data-parsley-maxlength-message="Mobile number should be 11 digits long"
+                                                       data-parsley-minlength-message="Mobile number should be 11 digits long"
+                                                       data-parsley-type-message="Mobile number should be English numeric."
+                                                       data-parsley-errors-container="#mobile_error">
+                                            </div>
+                                            <span id="mobile_error" class="text-red"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row col-md-12">
+                                        <div class="form-group very-compact-form-group col-md-3 required_field">
+                                            <label style="font-family: Kalpurush">পদবী</label>
+                                            <select class="form-control select2" name="add_designation"
+                                                    style="width: 100%;"
+                                                    data-parsley-required=""
+                                                    data-parsley-errors-container="#add_design_error">
+                                                <option selected="selected" value="">-Select Option-</option>
+                                            </select>
+                                            <span id="add_design_error"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-3">
+                                            <label for="inputEmail3" style="font-family: Kalpurush">ব্যক্তিগত ইমেইল</label>
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-envelope"></i>
+                                                </div>
+                                                <input type="email" class="form-control" name="personal_email"
+                                                       data-parsley-errors-container="#personal_email_error">
+                                            </div>
+                                            <span id="personal_email_error" class="text-red"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-3">
+                                            <label for="inputEmail3" id="official_email_label_add" style="font-family: Kalpurush">অফিসিয়াল ইমেইল</label>
+
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-envelope"></i>
+                                                </div>
+                                                <input type="email" class="form-control" name="official_email"
+                                                       data-parsley-errors-container="#email_error"
+{#                                                       data-parsley-required#}>
+                                            </div>
+                                            <span id="email_error" class="text-red"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-3">
+                                            <label for="inputEmail3" style="font-family: Kalpurush">অফিসিয়াল মোবাইল নম্বর</label>
+
+                                            <div class="">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-phone"></i>
+                                                </div>
+                                                <input type="text" class="form-control" name="official_mobile_no"
+                                                       data-parsley-type="digits" data-parsley-maxlength="11"
+                                                       data-parsley-minlength="11"
+                                                       data-parsley-maxlength-message="Mobile number should be 11 digits long"
+                                                       data-parsley-minlength-message="Mobile number should be 11 digits long"
+                                                       data-parsley-type-message="Mobile number should be English numeric."
+                                                       data-parsley-errors-container="#off_mobile_error">
+                                            </div>
+                                            <span id="off_mobile_error" class="text-red"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="new-border-box row col-md-12">
+                                    <div class="form-group very-compact-form-group col-md-12"
+                                         id="add-proc-role-lged-holder" style="display: none;">
+                                        <label>Procurement Role For <span
+                                                style="color: #3bb17b">LGED Tenders</span></label>
+                                        <select class="form-control select2" multiple="multiple"
+                                                name="procurement_roles"
+                                                data-parsley-errors-container="#p_role_error"
+                                                style="width: 100%;">
+                                        </select>
+                                        <span id="p_role_error"></span>
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-4"
+                                         id="add-e-gp-id-pe-admin-lged-holder"
+                                         style="display: none">
+                                        <label for="inputEmail3">e-GP id for PE Admin (<span style="color: #3bb17b">LGED Tender</span>)</label>
+                                        <div class="">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </div>
+                                            <input type="email" class="form-control" name="e_gp_user_id_for_pe_admin"
+                                                   data-parsley-error-message="This value should be a valid e-GP ID"
+                                                   data-parsley-errors-container="#e_gp_id_pe_admin_error">
+                                        </div>
+                                        <span id="e_gp_id_pe_admin_error"></span>
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-4"
+                                         id="add-e-gp-id-org-admin-lged-holder"
+                                         style="display: none">
+                                        <label for="inputEmail3">e-GP id for Org. Admin (<span style="color: #3bb17b">LGED Tender</span>)</label>
+                                        <div class="">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </div>
+                                            <input type="email" class="form-control" name="e_gp_user_id_for_org_admin"
+                                                   data-parsley-error-message="This value should be a valid e-GP ID"
+                                                   data-parsley-errors-container="#e_gp_id_org_admin_error">
+                                        </div>
+                                        <span id="e_gp_id_org_admin_error"></span>
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-4"
+                                         id="add-e-gp-id-govt-lged-holder"
+                                         style="display: none">
+                                        <label for="inputEmail3">e-GP id for Govt. User (<span style="color: #3bb17b">LGED Tender</span>)</label>
+                                        <div class="">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </div>
+                                            <input type="email" class="form-control" name="e_gp_user_id_for_govt"
+                                                   data-parsley-error-message="This value should be a valid e-GP ID"
+                                                   data-parsley-errors-container="#e_gp_id_govt_error">
+                                        </div>
+                                        <span id="e_gp_id_govt_error"></span>
+                                    </div>
+                                </div>
+                                <div class="new-border-box row col-md-12">
+                                    <div class="form-group very-compact-form-group col-md-12">
+                                        <label>Procurement Role For <span
+                                                style="color: #3bb17b">LGIs Tenders</span></label>
+                                        <select class="form-control select2"
+                                                multiple="multiple"
+                                                name="procurement_roles_lgis"
+                                                data-parsley-errors-container="#p_role_error_lgis"
+                                                style="width: 100%;">
+                                        </select>
+                                        <span id="p_role_error_lgis"></span>
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-4"
+                                         id="add-e-gp-id-pe-admin-lgis-holder"
+                                         style="display: none">
+                                        <label for="inputEmail3">e-GP id for PE Admin (<span style="color: #3bb17b">LGIs Tender</span>)</label>
+                                        <div class="">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </div>
+                                            <input type="email" class="form-control"
+                                                   name="e_gp_user_id_lgis_for_pe_admin"
+                                                   data-parsley-error-message="This value should be a valid e-GP ID"
+                                                   data-parsley-errors-container="#e_gp_id_lgis_pe_admin_error">
+                                        </div>
+                                        <span id="e_gp_id_lgis_pe_admin_error"></span>
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-4"
+                                         id="add-e-gp-id-org-admin-lgis-holder"
+                                         style="display: none">
+                                        <label for="inputEmail3">e-GP id for Org. Admin (<span style="color: #3bb17b">LGIs Tender</span>)</label>
+                                        <div class="">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </div>
+                                            <input type="email" class="form-control"
+                                                   name="e_gp_user_id_lgis_for_org_admin"
+                                                   data-parsley-error-message="This value should be a valid e-GP ID"
+                                                   data-parsley-errors-container="#e_gp_id_lgis_org_admin_error">
+                                        </div>
+                                        <span id="e_gp_id_lgis_org_admin_error"></span>
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-4"
+                                         id="add-e-gp-id-govt-lgis-holder"
+                                         style="display: none">
+                                        <label for="inputEmail3">e-GP id for Govt. User (<span style="color: #3bb17b">LGIs Tender</span>)</label>
+                                        <div class="">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </div>
+                                            <input type="email" class="form-control" name="e_gp_user_id_lgis_for_govt"
+                                                   data-parsley-error-message="This value should be a valid e-GP ID"
+                                                   data-parsley-errors-container="#e_gp_id_lgis_govt_error">
+                                        </div>
+                                        <span id="e_gp_id_lgis_govt_error"></span>
+                                    </div>
+                                </div>
+                                <div class="new-border-box row col-md-12">
+                                    <div class="form-group very-compact-form-group col-md-4">
+                                        <label>Photo</label>
+                                        <input type="file" id="avatar_for_insert" name="avatar">
+                                        <button type="button" onclick="remove_file('avatar_for_insert')">
+                                            <i class="fa fa-trash-o"> Cancel</i>
+                                        </button>
+                                        <p class="help-block">Please upload an image not larger than
+                                            2MB.</p>
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-4">
+                                        <label style="font-family: Kalpurush">৩ সপ্তাহের “PPR Training by CPTU” করেছেন কিনা ?
+{#                                            <span style="color: red">*</span>#}
+                                        </label>
+                                        <p>
+                                            <input type="radio" id="yes" value="True" name="PPR_training">&nbsp;Yes&nbsp;&nbsp;
+                                            <input type="radio" id="no" value="False" name="PPR_training">&nbsp;No
+                                        </p>
+                                    </div>
+                                    <div id="ppr_training_add" style="display: none">
+                                        <div class="form-group very-compact-form-group col-md-2"
+                                             id="start_date_add_div">
+                                            <label>Start Date</label>
+                                            <input type="text" autocomplete="off"
+                                                   name="start_date" class="form-control date">
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-2" id="venue_add_div">
+                                            <label>Venue</label>
+                                            <select id="venue_add" class="form-control select2" style="width: 100%"
+                                                    name="venue"
+                                                    data-parsley-errors-container="#venue_add_error">
+                                                <option value="">-Select Option-</option>
+                                            </select>
+                                            <span id="venue_add_error"></span>
+                                        </div>
+                                        <div class="form-group very-compact-form-group col-md-3">
+                                            <label>Certificate</label>
+                                            <input type="file" name="certificate" id="certificate_for_training">
+                                            <button type="button" onclick="remove_file('certificate_for_training')">
+                                                <i class="fa fa-trash-o"> Cancel</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <div class="pull-right col-md-12">
+                                <button type="reset" id="add-user-reset-btn" class="btn custom-reset-btn">Reset</button>
+                                |
+                                <button type="submit" class="btn custom-submit-btn">Submit</button>
+                                |
+                                <button type="button" class="btn custom-reset-btn" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="column-customization-modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"> Customize Column</h4>
+                </div>
+                <div class="modal-body" id="column-customization-modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-12">
+                        <button type="button" class="btn custom-reset-btn" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="assign-role-modal">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"> Assign Role</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row col-md-12">
+                        <div class="form-group col-md-6">
+                            <label>Role</label>
+                            <select id="selected_role" class="form-control select2" name="role" style="width: 100%;">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn custom-submit-btn role_assign">Submit</button>
+                        |
+                        <button type="button" class="btn custom-reset-btn" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+
+    {{ super() }}
+    {% include "base-parts/responsive_datatable_script.html" %}
+    {% include "base-parts/select2_script.html" %}
+    {% include "base-parts/js/date_picker.html" %}
+    <script src="{{ NODE_MODULES_URL }}moment/moment.js"></script>
+    <script src="{{ STATIC_URL }}dist/js/pipeline.datatable.js"></script>
+    <script>
+        $(function () {
+            window.Parsley.addValidator("notequalto", {
+                requirementType: "string",
+                validateString: function(value, element) {
+                    return value !== $(element).val();
+                }
+            });
+            {#window.Parsley.addValidator("notequalto", {#}
+            {#    requirementType: "email",#}
+            {#    validateString: function(value, element) {#}
+            {#        return value !== $(element).val();#}
+            {#    }#}
+           //});
+            let organization = '{{ user.profile.office.organization }}';
+            let user_id = '{{ user.id }}';
+            let jsonCallback = callAjax('/lged/api/v1/users/' + user_id + '/?fields=stage', 'GET', '');
+            jsonCallback.done(function (data) {
+                if (data['stage'] < 3) $('.close-btn').attr('disabled', true);
+                else $('.close-btn').attr('disabled', false);
+            });
+            if (window.location.href.split('?').pop() === 'from_transfer_add') {
+                $("#user-add-modal").modal('toggle');
+            }
+            $('input[type=radio]').change(function () {
+                if (this.id === 'yes') {
+                    $('#ppr_training_add').css('display', 'block');
+                    $('#start_date_add_div').addClass('required_field');
+                    $('#start_date_add_div').find('input').attr('data-parsley-required', true);
+                    $('#venue_add_div').addClass('required_field');
+                    $('#venue_add_div').find('select').attr('data-parsley-required', true);
+                } else if (this.id === 'no') {
+                    $('#ppr_training_add').css('display', 'none');
+                    $('#start_date_add_div').removeClass('required_field');
+                    $('#start_date_add_div').find('input').attr('data-parsley-required', false);
+                    $('#venue_add_div').removeClass('required_field');
+                    $('#venue_add_div').find('select').attr('data-parsley-required', false);
+                } else if (this.id === 'yes_update') {
+                    $('#ppr_training_update').css('display', 'block');
+                    $('#start_date_update_div').addClass('required_field');
+                    $('#start_date_update_div').find('input').attr('data-parsley-required', true);
+                    $('#venue_update_div').addClass('required_field');
+                    $('#venue_update_div').find('select').attr('data-parsley-required', true);
+                } else if (this.id === 'no_update') {
+                    $('#ppr_training_update').css('display', 'none');
+                    $('#start_date_update_div').removeClass('required_field');
+                    $('#start_date_update_div').find('input').attr('data-parsley-required', false);
+                    $('#venue_update_div').removeClass('required_field');
+                    $('#venue_update_div').find('select').attr('data-parsley-required', false);
+                }
+                else if (this.id === 'just_reset') {
+                    $('#password_option_showing').css('display', 'block');
+                    $('#password_option_showing').addClass('required_field');
+                    $('#password_option_showing').find('input').attr('data-parsley-required', true);
+                }
+                else if (this.id === 'fully_reset') {
+                    $('#password_option_showing').css('display', 'block');
+                    $('#password_option_showing').addClass('required_field');
+                    $('#password_option_showing').find('input').attr('data-parsley-required', true);
+                }
+                else if (this.id === 'not_reset') {
+                    $('#password_option_showing').css('display', 'none');
+                    $('#password_option_showing').removeClass('required_field');
+                    $('#password_option_showing').find('input').attr('data-parsley-required', false);
+                }
+            });
+            let data = {
+                proc_role_lged: true,
+                proc_role_lgi: true,
+                e_gp_id_lged: true,
+                add_e_gp_id_lged: false,
+                add_proc_role_lged: false
+            };
+
+            let lgi_roles_arr = [];
+            {% for role in user.profile.procurement_roles_lgis.all() %}
+                lgi_roles_arr.push('{{ role.role }}');
+            {% endfor %}
+
+            let office_category = '{{ user.profile.office.office_category }}';
+            let logged_in_office = '{{ user.profile.office.id }}';
+            let media_url = '{{ MEDIA_URL }}';
+            let user_permissions = {{ user_permissions | safe }};
+
+            if (user_permissions.includes('user_admin')) {
+                data.proc_role_lged = true;
+                data.proc_role_lgi = true;
+                data.e_gp_id_lged = true;
+                data.add_e_gp_id_lged = true;
+                data.add_proc_role_lged = true;
+            } else {
+                $("#imp_user_list_table").css("display", "block");
+            }
+            if (lgi_roles_arr.indexOf('Focal Point') !== -1) {
+                data.proc_role_lgi = true;
+            }
+
+            if (data.proc_role_lged) $('#update-proc-role-lged-holder').css('display', 'block');
+            if (data.proc_role_lgi) $('#update-proc-role-lgi-holder').css('display', 'block');
+            if (data.e_gp_id_lged) {
+                $('#update-e-gp-id-lged-holder').css('display', 'block');
+                $('#update-e-gp-id-lged-hidden').css('display', 'none');
+            }
+            if (data.add_e_gp_id_lged) $('#add-e-gp-id-lged-holder').css('display', 'block');
+            if (data.add_proc_role_lged) $('#add-proc-role-lged-holder').css('display', 'block');
+            let office_name = '{{ user.profile.office.name }}';
+            let user_type = '{{ type }}';
+            if (!user_permissions.includes('user_admin') && user_type !== 'admin') { // remove user_type !== 'admin'
+                // $('#proc-role-div').addClass('disabled-div');
+                $('#proc-role-div select').attr('readonly', true);
+                $('#proc-role-div input').attr('readonly', true);
+                $('select[name="designation"]').attr('readonly', true);
+            }
+            if (!user_permissions.includes('user_admin') && user_type === 'admin') {
+                // $('#proc-role-div').addClass('disabled-div');
+                $('#proc-role-div select').attr('readonly', true);
+                $('#proc-role-div input').not("input[name=e_gp_user_id_for_pe_admin]").attr('readonly', true);
+                $('select[name="designation"]').attr('readonly', true);
+            }
+            if (!user_permissions.includes('user_admin') && user_type === 'focal_point') {
+                $('#proc-role-div').css('display', 'none');
+                $('#ppr_training_div_update').css('display', 'none');
+                $('input[id="no_update"]').attr('checked', true).trigger('change');
+                $('input[id="no_update"]').prop('checked', 'checked').trigger('change');
+            }
+            if ((office_category === 'CITY CORPORATION OFFICES' || office_category === "PAURASHAVA OFFICES") && !user_permissions.includes('user_admin') && user_type === 'other') {
+                $('#proc-role-lged-div select').attr('readonly', false);
+                $('#proc-role-lged-div input').attr('readonly', false);
+            }
+            let transfer = '{{ transfer }}';
+            if (transfer === 'None') transfer = null;
+            let column_customization_form = {% include "user-profile/column_customization_form.html" %};
+
+            init_users(office_category, logged_in_office, media_url, data, office_name, user_type, transfer,
+                column_customization_form, organization, user_permissions);
+
+            $('#user-delete-btn').on('click', function () {
+                let id = $(".row-selected")[0].id || 1;
+                delete_user(id);
+            });
+
+            $('#additional-user-delete-btn').on('click', function () {
+                let id = $(".row-selected")[0].id || 1;
+                delete_additional_user(id);
+            });
+
+            $('#request-password').on('click', function () {
+                let permanent_office_selected = $("#user_list_table .row-selected");
+                let id = null;
+                let temp_office_id = null;
+
+                if (permanent_office_selected.length>0) {
+                    id = $("#user_list_table .row-selected")[0].id || 1
+                }
+
+                let temp_office_selected = $("#user_list_temp_office_table .row-selected");
+
+
+                if(  temp_office_selected.length>0){
+                     id= temp_office_selected.data('blank_user_id');
+                    temp_office_id=temp_office_selected[0].id;
+                }
+
+
+                let jsonCallBack = callAjax('/lged/api/v1/users/' + id + '/?fields=id,existing_user', 'GET', "");
+                jsonCallBack.done(function (data) {
+                    if (!data['existing_user']) {
+                        notify('Please update your information', 'success');
+                        return;
+                    }
+
+
+                    window.location = '/lged/request/password/' + id + '/';
+
+
+                });
+
+            });
+            $('#issue-btn').on('click', function () {
+                let issue_url = '/lged/item-issue/User/' + $(".row-selected")[0].id;
+                window.location.href = issue_url;
+            });
+
+        });
+    </script>
+
+{% endblock %}

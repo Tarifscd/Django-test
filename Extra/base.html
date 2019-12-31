@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %} PRO {% endblock %} INFO</title>
+    <link rel="icon" href="{{ MEDIA_URL }}img/logo.png">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="{{ NODE_MODULES_URL }}html5shiv/dist/html5shiv.min.js"></script>
+        <script src="{{ NODE_MODULES_URL }}respond.js/dest/respond.min.js"></script>
+    <![endif]-->
+
+    {% block css %}
+        {% include "base-parts/css.html" %}
+        <style>
+            div#notice {
+                background: white;
+            }
+
+            {% if user.is_anonymous %}
+                .content-wrapper {
+                    margin-left: 0;
+                }
+            {% endif %}
+        </style>
+    {% endblock %}
+</head>
+<!-- ADD THE CLASS layout-boxed TO GET A BOXED LAYOUT -->
+<body class="hold-transition skin-green-light layout-boxed sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+    <div class="header-banner-holder">
+        <header class="main-header">
+            {% block main_header %}
+                <nav class="navbar navbar-static-top m-l-0 main-navbar">
+                    <div class="container  responsive-container mb-responsive-container">
+                        <div class="container navbar-header responsive-navbar-header">
+                            <div class="pull-left logo-title-sub-menu">
+                                {#                            <a href={{ url('lged:index') }} class="navbar-brand logo-responsive">#}
+                                <a href="{{ url("lged:index") }}" class="navbar-brand logo-responsive">
+                                    <img src="{{ MEDIA_URL }}img/logo.png" class="img-md img-responsive">
+                                </a>
+                                <div class="pull-left title-responsive" id="title-full-text">
+                                    <ul class="nav navbar-nav">
+                                        <li class="">
+                                            <a href="{{ url("lged:index") }}" class="main-title">
+                                                Procurement Information Management System for LGI & LGED <span
+                                                    class="sr-only">(current)</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="pull-left title-responsive-mini navbar-custom-menu" id="title-mini-text">
+                                    <ul class="nav navbar-nav">
+                                        <li class="">
+                                            <a href={{ url('lged:index') }}>
+                                                LGED
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <a href="#" class="sidebar-toggle responsive-sidebar-toggle" data-toggle="push-menu"
+                                   role="button">
+                                    <span class="sr-only">Toggle navigation</span>
+                                </a>
+                            </div>
+                            <div class="pull-right main-sub-menu">
+                                <div class="" id="navbar-collapse">
+                                    <div class="navbar-custom-menu responsive-menu">
+                                        <ul class="nav navbar-nav">
+                                            <li class=""><a href={{ url('lged:index') }}><i id="home-icon"
+                                                                                            class="fa fa-home"></i><span
+                                                    id="home-text">Home</span> <span
+                                                    class="sr-only">(current)</span></a></li>
+                                            {% if user.is_authenticated %}
+                                                <li><a href='{{ url('lged:profile_details',id=user.id) }}'>Dashboard</a>
+                                                </li>
+                                            {% endif %}
+                                            {#                                        <li><a href="#"><i id="contact-us-icon" class="fa fa-phone"></i><span#}
+                                            {#                                                id="contact-us-text">Contact Us</span> </a></li>#}
+
+                                            {% if user.is_authenticated %}
+                                                <li class="dropdown user user-menu">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        {% if user.profile is not none and user.profile.image_name %}
+                                                            <img src="{{ MEDIA_URL }}avatars/{{ user.profile.image_name }}"
+                                                                 class="user-image"
+                                                                 alt="">
+                                                        {% else %}
+                                                            <img src="{{ MEDIA_URL }}avatars/default_profile_pic.jpg"
+                                                                 class="user-image"
+                                                                 alt="">
+                                                        {% endif %}
+                                                        <span class="hidden-xs">
+                                                {% if user.first_name %}
+                                                    {{ user.first_name }}
+                                                {% else %}
+                                                    User Name
+                                                {% endif %}
+                                            </span>
+                                                    </a>
+                                                    <ul class="dropdown-menu" id="user-sub-profile">
+                                                        <!-- User image -->
+                                                        <li class="user-header">
+                                                            {% if user.profile is not none and user.profile.image_name %}
+                                                                <img src="{{ MEDIA_URL }}avatars/{{ user.profile.image_name }}"
+                                                                     class="user-image"
+                                                                     alt="">
+                                                            {% else %}
+                                                                <img src="{{ MEDIA_URL }}avatars/default_profile_pic.jpg"
+                                                                     class="user-image"
+                                                                     alt="">
+                                                            {% endif %}
+
+                                                            <p>
+                                                                {{ user.first_name }} <br>
+                                                                {% if user.profile is not none  and user.profile.designation %}
+                                                                    <p class="dropdown-designation">{{ user.profile.designation.designation }}</p>
+                                                                {% endif %}
+                                                            </p>
+                                                        </li>
+                                                        <!-- Menu Footer-->
+                                                        <li class="user-footer">
+                                                            {#                                                            <div class="pull-left">#}
+                                                            {#                                                                <a href='{{ url('lged:profile_details',id=user.id) }}'#}
+                                                            {#                                                                   class="btn btn-success btn-flat">Profile</a>#}
+                                                            {#                                                            </div>#}
+                                                            {#                                                            <div class="pull-right">#}
+                                                            {#                                                                <a href="#" id="logout-btn"#}
+                                                            {#                                                                   class="btn btn-success btn-flat">Sign#}
+                                                            {#                                                                    out</a>#}
+                                                            {#                                                            </div>#}
+                                                            <div class="pull-right" style="width: 49%">
+                                                                <a href="#" id="edit_user_profile"
+                                                                   style="margin-left: 5px; margin-right: 5px;"
+                                                                   class="btn btn-success btn-flat">Edit User
+                                                                    Profile</a>
+                                                            </div>
+                                                            <div class="pull-right" id="change-pass-div">
+                                                                <a href="#" id="change-pass-btn"
+                                                                   class="btn btn-success btn-flat">Change Password</a>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+
+                                            {% else %}
+                                                {% block dt_user_login_info %}
+                                                    <li class="dropdown tasks-menu">
+                                                        <!-- Menu Toggle Button -->
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="fa fa-sign-in"></i>&nbsp;Login
+                                                            <span class="caret"></span>
+                                                        </a>
+                                                        <ul class="dropdown-menu responsive-login sign-in-custom">
+                                                            <li class="">
+                                                                <div class="login-box-body">
+                                                                    <p class="login-box-msg">Log in to start your
+                                                                        session
+                                                                    </p>
+
+                                                                    <form method="post" id="sign-in-form"
+                                                                          data-parsley-validate>
+                                                                        {% csrf_token %}
+
+                                                                        <div class="form-group has-feedback">
+                                                                            <input type="email" class="form-control"
+                                                                                   placeholder="Email" name="email"
+                                                                                   data-parsley-required>
+                                                                            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                                                                        </div>
+                                                                        <div class="form-group has-feedback">
+                                                                            <input type="password" class="form-control"
+                                                                                   placeholder="Password"
+                                                                                   name="password"
+                                                                                   data-parsley-required>
+                                                                            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-xs-8">
+                                                                                <!--<div class="checkbox icheck">
+                                                                                    <label>
+                                                                                        <input type="checkbox"> Remember Me
+                                                                                    </label>
+                                                                                </div>-->
+                                                                            </div>
+                                                                            <!-- /.col -->
+                                                                            <div class="col-xs-4">
+                                                                                <button type="submit" id="sign-in-btn"
+                                                                                        class="btn btn-success btn-block btn-flat">
+                                                                                    Log In
+                                                                                </button>
+                                                                                <input type="hidden" name="next"
+                                                                                       value="{{ next }}"/>
+                                                                            </div>
+                                                                            <!-- /.col -->
+                                                                        </div>
+                                                                    </form>
+                                                                    <!-- /.social-auth-links -->
+                                                                    <a href="pages/user-type-query.html"
+                                                                       data-toggle="modal"
+                                                                       data-target="#modal-default" class="text-blue">I
+                                                                        forgot
+                                                                        my
+                                                                        password</a><br>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                {% endblock %}
+                                            {% endif %}
+                                            {% if user.is_authenticated %}
+                                                <li><a href="#" id="logout-btn">Log out</a></li>
+                                            {% endif %}
+
+                                            {#                                        <li class="dropdown language-li">#}
+                                            {#                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
+                                            {#                                                <i class="fa fa-globe"></i><span#}
+                                            {#                                                    id="language-text">&nbsp;Language</span>#}
+                                            {#                                                <span class="caret"></span></a>#}
+                                            {#                                            <ul class="dropdown-menu" role="menu">#}
+                                            {#                                                <li><a href="#">English</a></li>#}
+                                            {#                                                <li><a href="#">Bangla</a></li>#}
+                                            {#                                            </ul>#}
+                                            {#                                        </li>#}
+
+                                        </ul>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+
+
+                        <!-- /.navbar-collapse -->
+                        <!-- Navbar Right Menu -->
+
+                        <!-- /.navbar-custom-menu -->
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+
+            {% endblock %}
+        </header>
+
+        <!-- =============================================== -->
+        {% block banner %}
+            {% if user.is_authenticated %}
+                <div class="banner">
+                    <div class="header" id="office_name_header_uzp">
+                        {% if user.profile.office is not none %}
+                            {{ user.profile.office.name }}
+                        {% endif %}
+                    </div>
+                    <div class="sub-header">
+                        {% if user.profile.office is not none  and user.profile.office.district is not none %}
+                            {{ user.profile.office.district }}
+                        {% endif %}
+
+                    </div>
+                    {% if user.profile.role.code == 'general_user' %}
+                        <div id="notice" class="sub-header example1 h3">
+                            {# <marquee behavior="scroll" direction="left">HTML scrolling text... </marquee> #}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endblock %}
+    </div>
+    {% block sidebar %}
+        {% if user.is_authenticated %}
+            <!-- Left side column. contains the sidebar -->
+            <aside class="main-sidebar main-sidebar-toggle">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <!-- <div class="banner mini-banner">
+            </div> -->
+            <section class="sidebar">
+
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+            <li class="header"></li>
+            {% if 'office_profile_menu' in user_permissions %}
+                <li id="user_profile">
+                    <a href="{{ url('lged:user_profile') }}">
+                        <i class="fa fa-home"></i> <span>Office Profile</span>
+                    </a>
+                </li>
+                {#                    <li id="users">#}
+                {#                        <a href="{{ url('lged:users') }}">#}
+                {#                            <i class="fa fa-user-o"></i> <span>User Profile</span>#}
+                {#                        </a>#}
+                {#                    </li>#}
+            {% endif %}
+            {% if 'user_profile_menu' in user_permissions %}
+                <li id="users-ul" class="treeview">
+                    <a href="" id='users-a'>
+                        <i class="fa fa-users"></i>
+                        <span id="user-menu-text">User Profile</span>
+                        <span class="pull-right-container">
+                                    <i class="fa fa-angle-down pull-right"></i>
+                                </span>
+                    </a>
+                    <ul class="treeview-menu " id="diff-training-ul">
+                        {% if 'all_user_menu' in user_permissions %}
+                            <li class="" id="all-user"><a href="{{ url('lged:filter_users', type="all") }}"><i
+                                    class="fa fa-users"></i>
+                                All </a></li>
+                        {% endif %}
+                        {% if 'focal_point_user_menu' in user_permissions %}
+                            <li class="" id="focal-point-user"><a
+                                    href="{{ url('lged:filter_users', type="focal_point") }}"><i
+                                    class="fa fa-users"></i>
+                                Focal Point User</a></li>
+                        {% endif %}
+                        {% if 'admin_user_menu' in user_permissions %}
+                            <li class="" id="admin-user"><a
+                                    href="{{ url('lged:filter_users', type="admin") }}"><i
+                                    class="fa fa-users"></i>
+                                Admin User</a></li>
+                        {% endif %}
+                        {% if 'government_user_menu' in user_permissions %}
+                            <li class="" id="other-user"><a
+                                    href="{{ url('lged:filter_users', type="other") }}"><i
+                                    class="fa fa-users"></i>
+                                Government User</a></li>
+                        {% endif %}
+                        {% if 'floating_user_menu' in user_permissions %}
+                            <li class="" id="floating-user"><a
+                                    href="{{ url('lged:filter_users', type="floating") }}"><i
+                                    class="fa fa-users"></i>
+                                Floating Users </a></li>
+                        {% endif %}
+                        {% if 'transfer_history_menu' in user_permissions %}
+                            <li class="" id="transfer-user"><a href="{{ url('lged:transfer_user') }}"><i
+                                    class="fa fa-history"></i>
+                                Transfer History</a></li>
+                        {% endif %}
+
+                        {% if 'transfer_history_menu' in user_permissions %}
+                            <li class="" id="multi-assign-user"><a href="{{ url('lged:multi_assign') }}"><i
+                                    class="fa fa-history"></i>
+                                Multiple Assigning History</a></li>
+                        {% endif %}
+
+                        {% if 'password_request_menu' in user_permissions %}
+                            <li class="" id="password-request-menu">
+                                <a href="{{ url('lged:password_requests') }}">
+                                    <i class="fa fa-share"></i> <span id="pw-req-menu-text">Password Requests</span>
+                                </a>
+                            </li>
+                        {% endif %}
+
+
+                    </ul>
+                </li>
+            {% endif %}
+            {% if 'project_profile_menu' in user_permissions %}
+                <li id="project_profile">
+                    <a href="{{ url('lged:project_profile') }}">
+                        <i class="fa fa-file-powerpoint-o"></i> <span>Project Profile</span>
+                    </a>
+                </li>
+            {% endif %}
+            {#                    <li id="tender_status">#}
+            {#                        <a href="{{ url('lged:tender_list') }}">#}
+            {#                        <a href="#">#}
+            {#                            <i class="fa fa-calendar-check-o"></i> <span>Tender/Contract Status</span>#}
+            {#                        </a>#}
+            {#                    </li>#}
+            {% if 'tender_status_menu' in user_permissions %}
+                <li id="main-tender-tree-view" class="treeview">
+                    <a href="" id='tender-settings-a'>
+                        <i class="fa fa-calendar-check-o"></i>
+                        <span>Tender Status</span>
+                        <span class="pull-right-container">
+                                        <i class="fa fa-angle-down pull-right"></i>
+                                    </span>
+                    </a>
+                    <ul class="treeview-menu " id="diff-training-ul">
+                        {% if 'all_tender_menu' in user_permissions %}
+                            <li class="" id="all_tender_list"><a href="{{ url('lged:all_tender_list') }}"><i
+                                    class="fa fa-calendar-check-o"></i>All</a></li>
+                        {% endif %}
+                        {% if 'app_package_lot_menu' in user_permissions %}
+                            <li class="" id="app"><a href="{{ url('lged:app_common_list') }}"><i
+                                    class="fa fa-calendar-check-o"></i>APP/Package/Lot</a></li>
+                        {% endif %}
+                        {#                            <li class="" id="app"><a href="{{ url('lged:app_list') }}"><i#}
+                        {#                                    class="fa fa-calendar-check-o"></i>APP</a></li>#}
+                        {#                            <li class="" id="package"><a href="{{ url('lged:package_list') }}"><i#}
+                        {#                                    class="fa fa-calendar-check-o"></i>Package</a></li>#}
+                        {#                            <li class="" id="lot"><a href="{{ url('lged:lot_list') }}"><i#}
+                        {#                                    class="fa fa-calendar-check-o"></i>Lot</a></li>#}
+                        {% if 'tender_menu' in user_permissions %}
+                            <li class="" id="tender"><a href="{{ url('lged:tender_list') }}"><i
+                                    class="fa fa-calendar-check-o"></i>Tender</a></li>
+                        {% endif %}
+                        {% if 'contract_menu' in user_permissions %}
+                            <li class="" id="contract"><a href="{{ url('lged:contract_list') }}"><i
+                                    class="fa fa-calendar-check-o"></i>Contract</a></li>
+                        {% endif %}
+                        {% if 'payment_menu' in user_permissions %}
+                            <li class="" id="payment"><a href="{{ url('lged:payment') }}"><i
+                                    class="fa fa-calendar-check-o"></i>Payment</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endif %}
+            {% if 'inventory_records_menu' in user_permissions %}
+                <li id="inventory">
+                    <a href="{{ url('lged:inventory_list') }}">
+                        <i class="fa fa-cubes"></i> <span>Inventory Records</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if 'budget_menu' in user_permissions %}
+                <li id="budget">
+                    <a href="{{ url('lged:budget_list') }}">
+                        {#                        <a href="#">#}
+                        <i class="fa fa-dollar"></i> <span>Budget</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if 'training_menu' in user_permissions %}
+                <li id="training" class="treeview">
+                    <a href="" id='training-a'>
+                        <i class="fa fa-graduation-cap"></i>
+                        <span>Training</span>
+                        <span class="pull-right-container"><i
+                                class="fa fa-angle-down pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu " id="diff-training-ul">
+                        {% if 'training_admin' in user_permissions %}
+                            <li id="hq-create-training"><a href="{{ url('lged:add_training') }}"><i
+                                    class="fa fa-users"></i> Create Training</a></li>
+                        {% endif %}
+                        {% if 'training_admin' in user_permissions %}
+                            <li id="batch-history"><a href="{{ url('lged:all_training_list') }}"><i
+                                    class="fa fa-list-ol"></i> Training History</a></li>
+                        {% endif %}
+                        {% if 'trainers_pool_menu' in user_permissions %}
+                            <li id="trainers-pool"><a href="{{ url('lged:trainers_pool') }}"><i
+                                    class="fa fa-user-circle"></i> e-GP Trainers Pool</a></li>
+                        {% endif %}
+                        {% if 'training_admin' not in user_permissions %}
+                            <li id="hq-create-training"><a href="{{ url('lged:add_local_training') }}"><i
+                                    class="fa fa-users"></i> Create Local Training</a></li>
+                        {% endif %}
+                        {% if 'training_admin' not in user_permissions %}
+                            <li id="local-history"><a href="{{ url('lged:all_training_list') }}"><i
+                                    class="fa fa-list-ol"></i> Local Training History</a></li>
+                        {% endif %}
+
+                    </ul>
+                </li>
+            {% endif %}
+        {% endif %}
+    {% if 'notice_board_menu' in user_permissions %}
+        <li id="main-announcement-tree-view" class="treeview">
+            <a href="" id='announcement-settings-a'>
+                <i class="fa fa-bullhorn"></i>
+                <span>Notice Board</span>
+                <span class="pull-right-container">
+                                    <i class="fa fa-angle-down pull-right"></i>
+                                </span>
+            </a>
+            <ul class="treeview-menu " id="diff-training-ul">
+                {% if 'notice_create_menu' in user_permissions %}
+                    <li class="" id="create_announcement"><a
+                            href="{{ url('lged:create_announcement') }}"><i
+                            class="fa fa-paper-plane-o"></i>Create Notice</a></li>
+                {% endif %}
+                {% if 'homepage_notice_create_menu' in user_permissions %}
+                    <li class="" id="create_announcement_for_homepage"><a
+                            href="{{ url('lged:create_announcement_for_homepage') }}"><i
+                            class="fa fa-paper-plane-o"></i>Create Notice for Homepage</a></li>
+                {% endif %}
+                {% if 'notice_history_menu' in user_permissions %}
+                    <li class="" id="announcements"><a href="{{ url('lged:announcements') }}"><i
+                            class="fa fa-list-ol"></i>Notice History</a></li>
+                {% endif %}
+            </ul>
+        </li>
+    {% endif %}
+    {% if 'external_members_menu' in user_permissions %}
+        <li class="" id="external-member">
+            <a href="{{ url('lged:external_member') }}">
+                {#                            <a href="#">#}
+                <i class="fa fa-users"></i> <span>External Members</span>
+            </a>
+        </li>
+    {% endif %}
+
+    {% if 'audit_trail_menu' in user_permissions %}
+        <li class="" id="audit-trail">
+            <a href="{{ url('lged:audit_trail') }}">
+                {#                            <a href="#">#}
+                <i class="fa fa-user-secret"></i> <span>Audit Trail</span>
+            </a>
+        </li>
+    {% endif %}
+
+    {% if 'archive_menu' in user_permissions %}
+        <li class="" id="publication">
+            <a href="{{ url('lged:publication_list') }}">
+                <i class="fa fa-book"></i> <span>Archive</span>
+            </a>
+        </li>
+    {% endif %}
+    {% if 'photo_gallery_menu' in user_permissions %}
+        <li class="" id="gallery">
+            <a href="{{ url('lged:gallery_list') }}">
+                <i class="fa fa-object-ungroup"></i> <span>Photo Gallery</span>
+            </a>
+        </li>
+    {% endif %}
+
+    {% if 'issue_menu' in user_permissions %}
+        <li id="issue-tree-view" class="treeview">
+            <a href="" id='issue-a'>
+                <i class="fa fa-flag-o"></i>
+                <span id="issue-menu-text">Issues</span>
+                <span class="pull-right-container">
+                                    <i class="fa fa-angle-down pull-right"></i>
+                                </span>
+            </a>
+            <ul class="treeview-menu " id="diff-training-ul">
+                {% if 'issue_pending_create_menu' in user_permissions %}
+                    <li class="" id="pending_issue"><a href="{{ url('lged:pending_issues') }}"><i
+                            class="fa fa-gear"></i>Pending/ Create</a></li>
+                {% endif %}
+                {% if 'issue_solved_menu' in user_permissions %}
+                    <li class="" id="solved_issue"><a href="{{ url('lged:solved_issues') }}"><i
+                            class="fa fa-gear"></i>Solved</a>
+                    </li>
+                {% endif %}
+                {#                            <li id="issue-list-tree-view" class="treeview">#}
+                {#                                <a href="" id='office-settings-a'>#}
+                {#                                    <i class="fa fa-circle-o"></i>#}
+                {#                                    <span>Issue List</span>#}
+                {#                                    <span class="pull-right-container">#}
+                {#                                    <i class="fa fa-angle-down pull-right"></i>#}
+                {#                                </span>#}
+                {#                                </a>#}
+                {#                                <ul class="treeview-menu " id="diff-issue-ul">#}
+                {#<li class="" id="pending_issue"><a href="{{ url('lged:pending_issues') }}"><i
+{#                                            class="fa fa-gear"></i>Pending</a></li>#}
+                {#                                    <li class="" id="solved_issue"><a href="{{ url('lged:solved_issues') }}"><i#}
+                {#                                            class="fa fa-gear"></i>Solved</a>#}
+                {#                                    </li>#}
+                {#                                </ul>#}
+                {#                            </li>#}
+            </ul>
+        </li>
+    {% endif %}
+    {% if 'settings_menu' in user_permissions %}
+
+        {#                            <li id="report-tree-view" class="treeview">#}
+        {#                                <a href="" id='training-a'>#}
+        {#                                    <i class="fa fa-line-chart"></i>#}
+        {#                                    <span>Report</span>#}
+        {#                                    <span class="pull-right-container">#}
+        {#                                    <i class="fa fa-angle-down pull-right"></i>#}
+        {#                                </span>#}
+        {#                                </a>#}
+        {#                                <ul class="treeview-menu " id="diff-training-ul">#}
+        {#                                    <li class="" id="tender-report"><a href="{{ url('lged:tender_report') }}"><i#}
+        {#                                            class="fa fa-circle-o"></i>#}
+        {#                                        Report on Tender</a></li>#}
+        {#                                    <li class="" id="training-egp"><a href="{{ url('lged:not_found') }}"><i#}
+        {#                                            class="fa fa-circle-o"></i>#}
+        {#                                        Report on Project</a></li>#}
+        {#                                </ul>#}
+        {#                            </li>#}
+        <li id="settings" class="treeview">
+            <a href="" id='settings-a'>
+                <i class="fa fa-gears"></i>
+                <span>Settings</span>
+                <span class="pull-right-container">
+                                    <i class="fa fa-angle-down pull-right"></i>
+                                </span>
+            </a>
+            <ul class="treeview-menu" id="diff-training-ul">
+                {% if 'permission_view' in user_permissions %}
+                    <li id="external-member-inclusion-tree-view">
+                        <a href="{{ url('lged:external_member_inclusion') }}"><i
+                                class="fa fa-gear"></i> Inclusion History</a>
+                    </li>
+                    <li id="permission-tree-view">
+                        <a href="{{ url('lged:role_permission') }}"><i
+                                class="fa fa-gear"></i> Permission Manager</a>
+                    </li>
+                {% endif %}
+                <li id="homepage-tree-view" class="treeview">
+                    <a href="" id='homepage-settings-a'>
+                        <i class="fa fa-gears"></i>
+                        <span>Homepage</span>
+                        <span class="pull-right-container">
+                                    <i class="fa fa-angle-down pull-right"></i>
+                                </span>
+                    </a>
+                    <ul class="treeview-menu " id="diff-training-ul">
+                        <li class="" id="home_page_image"><a
+                                href="{{ url('lged:home_page_image') }}"><i
+                                class="fa fa-image"></i>
+                            Home Page Image</a></li>
+                        <li class="" id="about_dimappp"><a
+                                href="{{ url('lged:home_page_writing', 'about_dimappp') }}"><i
+                                class="fa fa-file-text"></i>
+                            About DIMAPPP</a></li>
+                        <li class="" id="about_lgis"><a
+                                href="{{ url('lged:home_page_writing', 'about_lgis') }}"><i
+                                class="fa fa-file-text"></i>
+                            About LGIs</a></li>
+                        <li class="" id="about_lged"><a
+                                href="{{ url('lged:home_page_writing', 'about_lged') }}"><i
+                                class="fa fa-file-text"></i>
+                            About LGED</a></li>
+                        <li class="" id="contact"><a
+                                href="{{ url('lged:home_page_writing', 'contact') }}"><i
+                                class="fa fa-file-text"></i>
+                            Contact</a></li>
+                        <li class="" id="imp_links"><a href="{{ url('lged:imp_link') }}"><i
+                                class="fa fa-link"></i>
+                            Important Links</a></li>
+                    </ul>
+                </li>
+
+                <li id="office-tree-view" class="treeview">
+                    <a href="" id='office-settings-a'>
+                        <i class="fa fa-gears"></i>
+                        <span>Office</span>
+                        <span class="pull-right-container">
+                                    <i class="fa fa-angle-down pull-right"></i>
+                                </span>
+                    </a>
+                    <ul class="treeview-menu " id="diff-training-ul">
+                        <li class="" id="division"><a href="{{ url('lged:division') }}"><i
+                                class="fa fa-gear"></i>Division</a></li>
+                        <li class="" id="region"><a href="{{ url('lged:region') }}"><i
+                                class="fa fa-gear"></i>Region</a>
+                        </li>
+                        <li class="" id="district"><a href="{{ url('lged:district') }}"><i
+                                class="fa fa-gear"></i>District</a></li>
+                        <li class="" id="upazila"><a href="{{ url('lged:upazila') }}"><i
+                                class="fa fa-gear"></i>Upazila/Pourashava</a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="user-tree-view" class="treeview">
+                    <a href="" id='user-settings-a'>
+                        <i class="fa fa-gears"></i>
+                        <span>User</span>
+                        <span class="pull-right-container">
+                                    <i class="fa fa-angle-down pull-right"></i>
+                                </span>
+                    </a>
+                    <ul class="treeview-menu " id="diff-training-ul">
+                        <li class="" id="designation"><a href="{{ url('lged:designation') }}"><i
+                                class="fa fa-user-circle-o"></i>Designation</a></li>
+                        <li class="" id="p_role"><a href="{{ url('lged:procurement_role') }}"><i
+                                class="fa fa-user-circle-o"></i>Procurement Role</a></li>
+                    </ul>
+                </li>
+                <li id="inv-tree-view" class="treeview">
+                    <a href="" id='inv-settings-a'>
+                        <i class="fa fa-gears"></i>
+                        <span>Inventory</span>
+                        <span class="pull-right-container">
+                                    <i class="fa fa-angle-down pull-right"></i>
+                                </span>
+                    </a>
+                    <ul class="treeview-menu " id="diff-training-ul">
+                        <li class="" id="inv_type"><a href="{{ url('lged:inv_type') }}"><i
+                                class="fa fa-laptop"></i>Inventory Type</a></li>
+                        <li class="" id="inv_type_category"><a
+                                href="{{ url('lged:inv_type_category') }}"><i
+                                class="fa fa-laptop"></i>Inventory Type Category</a></li>
+                        <li class="" id="inv_file_type"><a href="{{ url('lged:inv_file_type') }}"><i
+                                class="fa fa-file"></i>Inventory File Type</a></li>
+                        <li class="" id="inv_package"><a href="{{ url('lged:inv_package') }}"><i
+                                class="fa fa-file"></i>Inventory Package</a></li>
+                        <li class="" id="inv_status"><a href="{{ url('lged:inv_status') }}"><i
+                                class="fa fa-info"></i>Inventory Status</a></li>
+                    </ul>
+                </li>
+                <li id="tender-tree-view" class="treeview">
+                    <a href="" id='tender-settings-a'>
+                        <i class="fa fa-gears"></i>
+                        <span>Tender</span>
+                        <span class="pull-right-container">
+                                    <i class="fa fa-angle-down pull-right"></i>
+                                </span>
+                    </a>
+                    <ul class="treeview-menu " id="diff-tender-ul">
+                        <li class="" id="responsive-bidder"><a
+                                href="{{ url('lged:responsive_bidder') }}"><i
+                                class="fa fa-gear"></i>Responsive Bidder</a></li>
+                        <li class="" id="approving-authority"><a
+                                href="{{ url('lged:approving_authority') }}"><i
+                                class="fa fa-gear"></i>Approving Authority</a></li>
+                        <li class="" id="budget-type"><a href="{{ url('lged:budget_type') }}"><i
+                                class="fa fa-gear"></i>Budget Type</a></li>
+                        <li class="" id="contract-status"><a
+                                href="{{ url('lged:contract_status') }}"><i
+                                class="fa fa-gear"></i>Contract Status</a></li>
+                        <li class="" id="proc-method"><a href="{{ url('lged:proc_method') }}"><i
+                                class="fa fa-gear"></i>Procurement Method</a></li>
+                        <li class="" id="proc-type"><a href="{{ url('lged:proc_type') }}"><i
+                                class="fa fa-gear"></i>Procurement Type</a></li>
+                        <li class="" id="proc-nature"><a href="{{ url('lged:proc_nature') }}"><i
+                                class="fa fa-gear"></i>Procurement Nature</a></li>
+                        <li class="" id="source-of-fund"><a href="{{ url('lged:source_of_fund') }}"><i
+                                class="fa fa-gear"></i>Source Of Fund</a></li>
+                        <li class="" id="type-of-emergency"><a
+                                href="{{ url('lged:type_of_emergency') }}"><i
+                                class="fa fa-gear"></i>Type Of Emergency</a></li>
+                    </ul>
+                </li>
+
+                <li id="training-tree-view" class="treeview">
+                    <a href="" id='training-settings-a'>
+                        <i class="fa fa-gears"></i>
+                        <span>Training</span>
+                        <span class="pull-right-container">
+                                    <i class="fa fa-angle-down pull-right"></i>
+                                </span>
+                    </a>
+                    <ul class="treeview-menu " id="diff-training-ul">
+                        <li class="" id="training_name"><a href="{{ url('lged:training_name') }}"><i
+                                class="fa fa-gear"></i>Training Name</a></li>
+                        <li class="" id="training_category"><a
+                                href="{{ url('lged:training_category') }}"><i
+                                class="fa fa-gear"></i>Training Category</a></li>
+                        {#                                        <li class="" id="batch_number"><a href="{{ url('lged:batch_number') }}"><i#}
+                        {#                                                class="fa fa-gear"></i>Batch Number</a>#}
+                        <li class="" id="funded_by"><a href="{{ url('lged:funded_by') }}"><i
+                                class="fa fa-gear"></i>Funding Source</a>
+                        </li>
+                        <li class="" id="venue"><a href="{{ url('lged:venue') }}">
+                            <i class="fa fa-home"></i>Venue</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="" id="issue-category"><a href="{{ url('lged:issue_title') }}"><i
+                        class="fa fa-gears"></i>
+                    Issue Title</a></li>
+                <li class="" id="from-announcement"><a
+                        href="{{ url('lged:from_announcement') }}"><i
+                        class="fa fa-gears"></i>
+                    Notice From</a></li>
+                <li class="" id="publication-type"><a href="{{ url('lged:publication_type') }}"><i
+                        class="fa fa-gears"></i>
+                    Publication Type</a></li>
+                <li id="external-member-tree-view" class="treeview">
+                    <a href="" id='external-member-settings-a'>
+                        <i class="fa fa-external-link"></i>
+                        <span>External Member</span>
+                        <span class="pull-right-container">
+                                    <i class="fa fa-angle-down pull-right"></i>
+                                </span>
+                    </a>
+                    <ul class="treeview-menu " id="diff-training-ul">
+                        <li class="" id="extorg"><a
+                                href="{{ url('lged:external_member_organization') }}"><i
+                                class="fa fa-assistive-listening-systems"></i>Organization</a></li>
+                        <li class="" id="committee_type"><a href="{{ url('lged:committee_type') }}"><i
+                                class="fa fa-group"></i>Committee Type</a></li>
+                        <li class="" id="invitee_office_menu"><a href="{{ url('lged:invitee-office') }}"><i
+                                class="fa fa-group"></i>Invitee Office</a></li>
+                    </ul>
+                </li>
+
+                <li id="budget-tree-view" class="treeview">
+                    <a href="" id='budget-settings-a'>
+                        <i class="fa fa-bar-chart"></i>
+                        <span>Budget</span>
+                        <span class="pull-right-container">
+                                    <i class="fa fa-angle-down pull-right"></i>
+                                </span>
+                    </a>
+                    <ul class="treeview-menu" id="diff-training-ul">
+                        <li class="" id="fund-disburse-from"><a
+                                href="{{ url('lged:fund_disburse_from') }}"><i
+                                class="fa fa-assistive-listening-systems"></i>Fund Disburse From</a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </li>
+    {% endif %}
+    </ul>
+    </section>
+    <!-- /.sidebar -->
+    </aside>
+        {#    {% endif %}#}
+    {% endblock %}
+
+    <!-- =============================================== -->
+
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        {% block content %}
+            <!-- Main content -->
+            <section class="row content">
+                {% block inner_content %}
+
+                {% endblock %}
+
+            </section>
+        {% endblock %}
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <div class="modal fade confirm-delete-input-modal" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure to delete the selected row from the database?
+                </div>
+
+                <div class="modal-footer">
+                    <button id="confirm-del-btn" type="submit" class="btn custom-submit-btn">Yes</button>
+                    <button id="cancel-del-btn" type="submit" class="btn custom-reset-btn" data-dismiss="modal">No
+                    </button>
+                    <button type="button" class="btn custom-reset-btn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade change-password-modal" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Change Password</h4>
+                </div>
+                <form id="change-password-form" data-parsley-validate>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-md-12 required_field">
+                                <label>Old Password</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-key"></i>
+                                    </div>
+                                    <input type="password" class="form-control" name="password"
+                                           data-parsley-required data-parsley-errors-container="#previous_pass_error">
+                                </div>
+                                <span id="previous_pass_error" class="text-red"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12 required_field">
+                                <label>New Password</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-key"></i>
+                                    </div>
+                                    <input type="password" id="new_password" class="form-control" name="new_password"
+                                           data-parsley-required data-parsley-errors-container="#new_pass_error">
+                                </div>
+                                <span id="new_pass_error" class="text-red"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12 required_field">
+                                <label>Confirm New Password</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-key"></i>
+                                    </div>
+                                    <input type="password" class="form-control" data-parsley-equalto="#new_password"
+                                           data-parsley-required data-parsley-errors-container="#confirm_pass_error">
+                                </div>
+                                <span id="confirm_pass_error" class="text-red"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn custom-submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <footer class="main-footer">
+        {% block footer %}
+            <div class="col-md-offset-4">
+                <!-- To the right -->
+                <div class="pull-right hidden-xs">
+                    &nbsp;
+                </div>
+                <!-- Default to the left -->
+                <strong>Copyright &copy; 2018 <a href="#">Procurement Unit, LGED</a>.</strong> All rights reserved.
+            </div>
+            <div class="col-md-offset-4">
+                <b>Contact:</b> xen.procurement@lged.gov.bd, <b>Phone:</b> 02-8181103
+            </div>
+        {% endblock %}
+    </footer>
+
+</div>
+<!-- ./wrapper -->
+{% block script %}
+    {% include "base-parts/script.html" %}
+    <script src="{{ NODE_MODULES_URL }}parsleyjs/dist/parsley.js"></script>
+    <script src="{{ NODE_MODULES_URL }}bootstrap-notify/bootstrap-notify.js"></script>
+    {% if user.is_authenticated %}
+        <script>
+            $('.change-password-modal').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: false,
+            });
+            $(document).ready(function () {
+                let issueCallBack = callAjax('/lged/api/v1/issue/?seen_status=false', 'GET', "");
+                issueCallBack.done(function (data) {
+                    if (data.length !== 0) {
+                        $('#issue-menu-text').css('color', '#3276ad');
+                        $('#issue-menu-text').append('(' + data.length + ')');
+                    }
+                });
+                let userCallBack = callAjax('/lged/api/v1/users/?floating=true&fields=id', 'GET', "");
+                userCallBack.done(function (data) {
+                    if (data.length !== 0) {
+                        $('#user-menu-text').css('color', '#3276ad');
+                        //$('#user-menu-text').append('(' + data.length + ')');
+                    }
+                });
+                let user_id = '{{ user.id }}';
+                let jsonCallback = callAjax('/lged/api/v1/users/' + user_id + '/?fields=stage', 'GET', '');
+                jsonCallback.done(function (data) {
+                    if (data['stage'] !== 3) $('.close-btn').attr('disabled', true);
+                    else $('.close-btn').attr('disabled', false);
+                });
+                let office_id = '{{ user.profile.office.id }}';
+                let user_permissions = {{ user_permissions | safe }};
+                let pw_req_url = '';
+                if (user_permissions.includes('pw_req_admin')) pw_req_url = '/lged/api/v1/password-request/?status=Pending';
+                else pw_req_url = '/lged/api/v1/password-request/?status=Pending' + '&office=' + office_id;
+                let pwCallBack = callAjax(pw_req_url, 'GET', "");
+                pwCallBack.done(function (data) {
+                    if (data.length !== 0) {
+                        $('#pw-req-menu-text').css('color', '#3276ad');
+                        $('#pw-req-menu-text').append('(' + data.length + ')');
+                    }
+                });
+
+                let titles = [];
+                let ids = [];
+                let expired_dates = [];
+                let created_by = [];
+                let jsonCallBack = callAjax('/lged/api/v1/announcement/?draft=1&pending=1', 'GET', "");
+                jsonCallBack.done(function (data) {
+                    $.each(data, function (index, value) {
+                        Date.prototype.addHours = function (h) {
+                            this.setHours(this.getHours() + h);
+                            return this;
+                        };
+
+                        function parseDate(str) {
+                            // console.log(str);
+                            let index = str.indexOf("T");
+                            str = str.substring(0, index);
+                            let mdy = str.split('-');
+                            return new Date(mdy[0], mdy[1] - 1, mdy[2]);
+                        }
+
+                        function datediff(first, second) {
+                            // Take the difference between the dates and divide by milliseconds per day.
+                            // Round to nearest whole number to deal with DST.
+                            return Math.round((second - first) / (1000 * 60 * 60 * 24));
+                        }
+
+                        if (value['expired_date'] === null) {
+                            titles.push(value['title']);
+                            ids.push(value['id']);
+                            expired_dates.push('');
+                            created_by.push(value['training_status']);
+                        } else if (new Date(Date.parse(value['expired_date'])) > new Date().addHours(6)) {
+                            titles.push(value['title']);
+                            ids.push(value['id']);
+                            created_by.push(value['training_status']);
+                            let exp = parseDate(value['expired_date']);
+                            let cur = parseDate(new Date().addHours(6).toISOString());
+                            expired_dates.push(datediff(cur, exp));
+                            // console.log(cur, exp, datediff(cur, exp));
+                            // console.log(new Date(value['expired_date']).getDate() - new Date().addHours(6).getDate());
+                        }
+                    });
+                    var main_js = init_floating_notice(titles, ids, expired_dates, created_by,
+                        '{{ user.profile.office.office_category }}');
+                });
+                jsonCallBack.fail(function (request) {
+                    showError(request)
+                });
+                // let titles = "{{ user.profile.office.announcement_office.all().values_list('title', flat=True) | safe}}";
+                // titles = convert_to_array(titles);
+                // titles = titles.split(',');
+                // let ids = "{{ user.profile.office.announcement_office.all().values_list('pk', flat=True) | safe }}";
+                // ids = convert_to_array(ids);
+                // ids = ids.split(',').map(Number);
+                // var main_js = init_floating_notice(titles, ids);
+
+            });
+
+            $('#edit_user_profile').on('click', function () {
+                let user_id = '{{ user.id }}';
+                window.location = '/lged/users/focal_point/?' + user_id;
+            });
+
+            function objectifyForm(formArray) {//serialize data function
+
+                var returnArray = {};
+                for (var i = 0; i < formArray.length; i++) {
+                    returnArray[formArray[i]['name']] = formArray[i]['value'];
+                }
+                return returnArray;
+            }
+
+            $(function () {
+                let organization = '{{ user.profile.office.organization }}';
+                let office_category = '{{ user.profile.office.office_category }}';
+                let office_name = '{{ user.profile.office.name }}';
+                if (organization === 'LGED' && office_category === 'District Office (Field)') {
+                    $('.sub-header').text($('#office_name_header_uzp').text());
+                    $('#office_name_header_uzp').text('Office of the Executive Engineer, LGED');
+                    $('.main-sidebar').css('margin-top', '65px');
+                } else {
+                    $('.main-sidebar').css('margin-top', '0');
+                }
+                if (office_name.includes('Upazila Parishad')) {
+                    $('#office_name_header_uzp').append('<br> & Office of the Upazila Engineer');
+                    $('.main-sidebar').css('margin-top', '65px');
+                } else {
+                    $('.main-sidebar').css('margin-top', '0');
+                }
+
+                let all_training_list_url = '{{ url('lged:all_training_list') }}';
+                let user_id = '{{ user.id }}';
+                let user_email = '{{ user.email }}';
+                init_base(all_training_list_url, user_email, user_id);
+                var sign_in_parsley = $('#sign-in-form').parsley();
+                if (sign_in_parsley) {
+
+                    $('#sign-in-form').parsley().on('form:submit', function () {
+
+                        var x = $("#sign-in-form").serializeArray();
+                        var jsonData = objectifyForm(x);
+                        $.ajax({
+                            method: 'POST',
+                            url: '/lged/api/v1/login',
+                            data: JSON.stringify(jsonData),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            done: function (data) {
+                            },
+                            success: function (data) {
+                                console.log(data);
+                                if (data === 'OK') {
+                                    window.location.href = '{{ url('lged:user_profile') }}';
+                                } else {
+                                    $.notify({
+                                        message: 'Incorrect username or password.'
+                                    }, {
+                                        type: 'danger',
+                                        delay: 5000,
+                                        timer: 1000,
+                                        animate: {
+                                            enter: 'animated fadeInDown',
+                                            exit: 'animated fadeOutUp'
+                                        },
+                                    });
+
+                                }
+
+                            },
+                            complete: function () {
+                                {#alert('complete')#}
+                            }
+                        });
+
+                        return false; // Don't submit form for this demo
+                    });
+                }
+
+
+            });
+
+        </script>
+    {% endif %}
+{% endblock %}
+
+
+</body>
+</html>

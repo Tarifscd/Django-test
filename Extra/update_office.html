@@ -1,0 +1,323 @@
+{% extends  "base.html" %}
+
+{% block css %}
+    {% include "base-parts/select2_css.html" %}
+    {{ super() }}
+    <style>
+        form div .form-group .input-group-addon{
+             display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block main_header %}
+    {{ super() }}
+{% endblock %}
+
+{% block mb_user_login_info %}
+{% endblock %}
+
+{% block dt_user_login_info %}
+{% endblock %}
+
+{% block banner %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <section class="content-header">
+        <a onclick="goBack()" title="Back" class="pull-right btn icon-btn pull-right btn bg-olive">
+                <i class="fa fa-mail-reply"></i> Go Back</a>
+        <h1 class="float-left">
+            &nbsp;&nbsp;Update Office
+            <!-- <small>Blank example to the boxed layout</small> -->
+        </h1>
+    </section>
+    {{ super() }}
+
+{% endblock %}
+
+
+{% block inner_content %}
+    <div class="box custom-box">
+    <div class="box-header form-header">
+{#        <h5 class="form-header-title">Update Office</h5>#}
+    </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+    <form role="form" class="form-background" id="update-office-form" action="" method="post" data-parsley-validate>
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
+        <div class="box-body">
+            <div class="row">
+                <div class="form-group compact-form-group col-md-12 required_field">
+                    <label for="inputEmail3">Office Name</label>
+                    <div class="">
+                        <div class="input-group-addon">
+                            <i class="fa fa-home"></i>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Example: Akhaura Pourashava"
+                               name="name"
+                               data-parsley-required data-parsley-errors-container="#name_error">
+                    </div>
+                    <span id="name_error" class="text-red"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group compact-form-group col-md-3 select-option required_field">
+                    <label>Organization</label>
+                    <select class="form-control select2" style="width: 100%;" name="organization"
+                            data-parsley-required
+                            data-parsley-errors-container="#organization_error">
+                        <option value="">-Select Option-</option>
+                        <option value="LGED">LGED</option>
+                        <option value="LGIS">LGIS</option>
+                        <option value="e-GP LAB">e-GP LAB</option>
+                    </select>
+                    <span id="organization_error" class="text-red"></span>
+                </div>
+                <div class="form-group compact-form-group col-md-3 select-option required_field office-category-holder">
+                    <label>Office Category</label>
+                    <select class="form-control select2" style="width: 100%;" name="office_category"
+                            data-parsley-required data-parsley-errors-container="#category_error">
+                        <option value="">-Select Option-</option>
+                    </select>
+                    <span id="category_error" class="text-red"></span>
+                </div>
+                <div class="form-group compact-form-group col-md-3 select-option" id="pourashava_class"
+                    style="display: none">
+                    <label>Class</label>
+                    <select class="form-control select2" style="width: 100%;" name="pourashava_class"
+                            data-parsley-errors-container="#pourashava_class_error">
+                        <option value="">-Select Option-</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                    </select>
+                    <span id="pourashava_class_error" class="text-red"></span>
+                </div>
+                <div class="form-group compact-form-group col-md-3 select-option required_field">
+                    <label>Division</label>
+                    <select class="form-control select2" name="division" data-parsley-required
+                            data-parsley-errors-container="#division_error">
+                        <option value="">-Select Option-</option>
+                    </select>
+                    <span id="division_error" class="text-red"></span>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="form-group compact-form-group col-md-3 select-option">
+                    <label>Region</label>
+                    <select class="form-control select2" name="region"
+                            data-parsley-errors-container="#region_error">
+                        <option value="">-Select Option-</option>
+                    </select>
+                    <span id="region_error" class="text-red"></span>
+                </div>
+                <div class="form-group compact-form-group col-md-3 select-option">
+                    <label>District</label>
+                    <select class="form-control select2" name="district"
+                            data-parsley-errors-container="#district_error">
+                        <option value="">-Select Option-</option>
+                    </select>
+                    <span id="district_error" class="text-red"></span>
+                </div>
+                <div class="form-group compact-form-group col-md-3 select-option">
+                    <label>Thana/Upazila</label>
+                    <select class="form-control select2" style="width: 100%;" name="upazila"
+                            data-parsley-errors-container="#upazila_error">
+                        <option value="">-Select Option-</option>
+                    </select>
+                    <span id="upazila_error" class="text-red"></span>
+                </div>
+
+                <div class="form-group compact-form-group col-md-3 select-option">
+                    <label>City Corporation</label>
+                    <select class="form-control select2" style="width: 100%;" name="city_corporation"
+                            data-parsley-errors-container="#city_error">
+                        <option value="">-Select Option-</option>
+                    </select>
+                    <span id="city_error" class="text-red"></span>
+                </div>
+            </div>
+            <div class="row">
+
+            </div>
+            <div class="row">
+                <div class="form-group compact-form-group col-md-4">
+                    <label for="inputEmail3">Post Code.</label>
+
+                    <div class="">
+                        <div class="input-group-addon">
+                            <i class="fa  fa-code"></i>
+                        </div>
+                        <input data-parsley-type="digits" class="form-control" name="post_code"
+                               placeholder="Example: 6610"
+                               data-parsley-maxlength="4" data-parsley-minlength="4"
+                               data-parsley-maxlength-message="Post code should be 4 digits long"
+                               data-parsley-minlength-message="Post code should be 4 digits long"
+                               data-parsley-type-message="Post code should be numeric."
+                               data-parsley-errors-container="#post_code_error">
+                    </div>
+                    <span id="post_code_error" class="text-red"></span>
+                </div>
+                <div class="form-group compact-form-group col-md-4">
+                    <label for="inputEmail3">Phone No.</label>
+
+                    <div class="">
+                        <div class="input-group-addon">
+                            <i class="fa  fa-phone"></i>
+                        </div>
+                        <input data-parsley-type="digits" class="form-control" name="phone_no"
+                               placeholder="Example: 09165907"
+                               data-parsley-errors-container="#phone_no_error">
+                    </div>
+                    <span id="phone_no_error" class="text-red"></span>
+                </div>
+                <div class="form-group compact-form-group col-md-4">
+                    <label for="inputEmail3">Fax No.</label>
+
+                    <div class="">
+                        <div class="input-group-addon">
+                            <i class="fa  fa-fax"></i>
+                        </div>
+                        <input data-parsley-type="digits" class="form-control" name="fax_no"
+                               placeholder="Example:  029110512"
+                               data-parsley-errors-container="#fax_no_error">
+                    </div>
+                    <span id="fax_no_error" class="text-red"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group compact-form-group col-md-6">
+                    <label for="inputEmail3">Office Website Link</label>
+                    <div class="">
+                        <div class="input-group-addon">
+                            <i class="fa fa-external-link"></i>
+                        </div>
+                        <input type="text" class="form-control" placeholder="www.lged.gov.bd" name="website_link"
+                               data-parsley-type="url" data-parsley-errors-container="#url_error">
+                    </div>
+                    <span id="url_error" class="text-red"></span>
+                </div>
+                <div class="form-group compact-form-group col-md-6">
+                    <label for="inputEmail3">Focal Point Email</label>
+                    <div class="">
+                        <div class="input-group-addon">
+                            <i class="fa fa-envelope"></i>
+                        </div>
+                        <input type="text" class="form-control" placeholder="focal.ps.bbaria@lgi.gov.bd"
+                               name="email"
+                               data-parsley-type="email" data-parsley-errors-container="#focal_point_email_error">
+                    </div>
+                    <span id="focal_point_email_error" class="text-red"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="latt-long-holder" style="display: block;">
+                    <div class="form-group col-md-4">
+                        <label for="inputEmail3">Select Location from Map</label>
+
+                        <div class="">
+                            <button type="button" id="set-from-map" class="btn">
+                                Google Map
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputEmail3">Latitude</label>
+
+                        <div class="">
+                            <div class="input-group-addon">
+                                <i class="fa  fa-code"></i>
+                            </div>
+                            <input type="number" step=.0000000000000001 min="-90" max="90"
+                                   class="form-control fixed-form" name="latt"
+                                   placeholder="Latitude" id="latitude"
+                                   data-parsley-errors-container="#latt_error" readonly>
+                        </div>
+                        <span id="latt_error" class="text-red"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputEmail3">Longitude</label>
+
+                        <div class="">
+                            <div class="input-group-addon">
+                                <i class="fa  fa-code"></i>
+                            </div>
+                            <input type="number" step=.0000000000000001 min="-180" max="180"
+                                   class="form-control fixed-form" name="long" id="longitude"
+                                   placeholder="Longitude"
+                                   data-parsley-errors-container="#long_error" readonly>
+                        </div>
+                        <span id="long_error" class="text-red"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group compact-form-group col-md-12">
+                    <label>Office address</label>
+                    <textarea class="form-control" name="address" rows="2"
+                              placeholder="Example: Level-5, LGED Bhaban; Agargaon, Shere Bangla Nagar Dhaka-1207."></textarea>
+                </div>
+            </div>
+            {#                <div class="row">#}
+            {#                    <div class="col-md-12 supllier">#}
+            {#                        <h4>Add Users </h4>#}
+            {#                        <div class="col-md-12 inside-supplier"></div>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#                <div class="row">#}
+            {#                    <div class="form-group compact-form-group col-md-12">#}
+            {##}
+            {#                        <select class="form-control select2" name="users" multiple="multiple"#}
+            {#                                data-placeholder="Add Users"#}
+            {#                                style="width: 100%;">#}
+            {#                        </select>#}
+            {#                    </div>#}
+            {#                </div>#}
+        </div>
+        <div class="box-footer custom-box-footer">
+            <button type="reset" class="btn custom-form-reset-btn" id="add-office-form-reset-btn">Reset</button>
+            |
+            <button type="submit" class="btn custom-form-submit-btn">Submit</button>
+        </div>
+    </form>
+    <!-- /.box-body -->
+
+    <!-- /.box-footer -->
+    <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 9999;">
+        <div class="modal-dialog modal-lg">
+            <form id="form-map" class="" method="post" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" style="max-width: 90%; float: left;">SELECT LOCATION</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="map" style="height: 500px"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn bgm-gray waves-effect" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    {{ super() }}
+    {% include "base-parts/select2_script.html" %}
+    <script type="text/javascript" async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDr6sHBgKPfb-TQ-fS_ZZyNgxYaixuc6bo"></script>
+
+    <script>
+        $(function () {
+            id = "{{ id }}";
+            init_update_office();
+            let map = new GMap();
+            map.modal = $("#mapModal");
+            map.mapModal("#latitude", "#longitude");
+        });
+    </script>
+{% endblock %}

@@ -2,19 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ef0ef77f-af92-405b-9afa-319406f8e4b3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/music/api/api_urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/music/api/v1/v1_urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/music/api/v1/viewsets.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/music/serializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/ExternalMemberInclusionHistory.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/add_office.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/add_office.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/base.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/base_home.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/conf_urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/external_member_inclusion_history.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/serializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/update_office.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/update_office.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/users.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/users.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extra/viewsets.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/music/static/music/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/music/static/music/js/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/music/static/music/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/music/static/music/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/music/templates/music/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/music/templates/music/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/music/templates/music/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/music/templates/music/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/music/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/music/music_urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/music/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/music/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testdjango/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/testdjango/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testdjango/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/testdjango/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,12 +85,27 @@
       <option name="project" value="LOCAL" />
       <updated>1577782560569</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="API added and jd, jquery added.">
+      <created>1577826126287</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1577826126287</updated>
+    </task>
+    <task id="LOCAL-00003" summary="API added and jd, jquery added.">
+      <created>1577826177013</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1577826177013</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add 1st js file." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add 1st js file." />
+    <MESSAGE value="API added and jd, jquery added." />
+    <option name="LAST_COMMIT_MESSAGE" value="API added and jd, jquery added." />
   </component>
   <component name="WindowStateProjectService">
     <state x="174" y="54" width="1084" height="712" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1577394875510">
@@ -96,10 +116,10 @@
       <screen x="67" y="27" width="1299" height="741" />
     </state>
     <state x="399" y="124" width="624" height="544" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/67.27.1299.741@67.27.1299.741" timestamp="1577210285971" />
-    <state x="323" y="27" width="777" height="741" key="CommitChangelistDialog2" timestamp="1577826124808">
+    <state x="323" y="27" width="777" height="741" key="CommitChangelistDialog2" timestamp="1577827258999">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state x="323" y="27" width="777" height="741" key="CommitChangelistDialog2/67.27.1299.741@67.27.1299.741" timestamp="1577826124808" />
+    <state x="323" y="27" width="777" height="741" key="CommitChangelistDialog2/67.27.1299.741@67.27.1299.741" timestamp="1577827258999" />
     <state x="502" y="129" width="424" height="484" key="FileChooserDialogImpl" timestamp="1577783230506">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
@@ -108,10 +128,10 @@
       <screen x="67" y="27" width="1299" height="741" />
     </state>
     <state x="205" y="31" key="SettingsEditor/67.27.1299.741@67.27.1299.741" timestamp="1577435005377" />
-    <state x="311" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1577826131753">
+    <state x="311" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1577826198503">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state x="311" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2/67.27.1299.741@67.27.1299.741" timestamp="1577826131753" />
+    <state x="311" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2/67.27.1299.741@67.27.1299.741" timestamp="1577826198503" />
     <state x="372" y="224" key="com.intellij.ide.util.TipDialog" timestamp="1577782382419">
       <screen x="67" y="27" width="1299" height="741" />
     </state>

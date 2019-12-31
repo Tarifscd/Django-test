@@ -1,0 +1,889 @@
+{% extends  "base.html" %}
+
+{% block css %}
+    {% include "base-parts/select2_css.html" %}
+    {{ super() }}
+    {% include "base-parts/responsive_datatable_css.html" %}
+    {% include "base-parts/css/date_picket.html" %}
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block main_header %}
+    {{ super() }}
+{% endblock %}
+
+{% block mb_user_login_info %}
+{% endblock %}
+
+{% block dt_user_login_info %}
+{% endblock %}
+
+
+{% block content %}
+
+    {{ super() }}
+
+{% endblock %}
+
+{% block banner %}
+    {{ super() }}
+{% endblock %}
+
+
+{% block inner_content %}
+    <div class="box box-success pos-relative">
+        <div class="box-header">
+            <div class="col-md-4 p-0" style="padding-left: 7px !important;">
+                <h3 class="box-title">External Member Inclusion History</h3>
+            </div>
+            <div class="col-md-8 icon-buttons pull-right">
+                <td>
+                    <a onclick="goBack()" title="Back" class="pull-right btn icon-btn pull-right btn bg-olive"><i
+                            class="fa fa-mail-reply"></i> Go Back</a>
+                    <a id="generate-link-btn" class="pull-right btn icon-btn pull-right btn"><i
+                            class="fa fa-link"> Generate Link </i></a>
+{#                    <a class="pull-right btn icon-btn pull-right btn" href={{ url('lged:external_member_link', '2') }}>#}
+{#                        Inclusion Link (Case 2)</a>#}
+{#                    <a class="pull-right btn icon-btn pull-right btn" href={{ url('lged:external_member_link', '3') }}>#}
+{#                        Inclusion Link (Case 3)</a>#}
+{#                    <a class="pull-right btn icon-btn pull-right btn" href={{ url('lged:external_member_link', '4') }}>#}
+{#                        Inclusion Link (Case 4)</a>#}
+                </td>
+                {% if 'user_add' in user_permissions %}
+                            <a id="user-add-btn"
+                               class="btn batch-delete-btn pull-right text-green icon-btn"
+                               data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fa fa-plus"></i>
+                                Add User
+                            </a>
+
+                {% endif %}
+
+                {% if 'user_admin' in user_permissions %}
+                            <a id="new-user-update-btn"
+                               class="btn disabled batch-delete-btn pull-right text-yellow icon-btn"
+                               data-toggle="tooltip" data-placement="bottom" title="Edit data"><i
+                                    class="fa fa-pencil"></i>
+                                Update
+                            </a>
+
+                {% endif %}
+            </div>
+        </div>
+
+
+        <!-- /.box-header -->
+        <div class="box-body">
+            <table id="external-member-inclusion-table" class="table table-bordered table-striped" style="width: 100%">
+                <thead>
+                <tr class="tr-text-center">
+                    <th>SL</th>
+                    <th>Organization</th>
+                    <th>Office Category</th>
+                    <th>Office Name</th>
+                    <th>Office Name (In Bengali)</th>
+                    <th>User ID for Pro Info</th>
+                    <th>Focal Point Designation</th>
+{#                    <th>Admin Users</th>#}
+                    <th>Govt. Users</th>
+                    <th>First Name</th>
+                    <th>Designation</th>
+                    <th>NID</th>
+                    <th>Personal Mobile No.</th>
+                    <th>Official Email</th>
+                    <th>Date of Birth</th>
+                    <th>Procurement Roles</th>
+                    <th>e-GP User ID For Govt</th>
+                    <th>PPR Training Attendance</th>
+                    <th>Start Date</th>
+                    <th>Venue</th>
+{#                    <th>Certificate</th>#}
+                    <th>Status</th>
+                </tr>
+                </thead>
+            </table>
+            <br><br>
+            <div class="col-md-8 icon-buttons pull-right">
+                <a id="transfer-btn"
+                    class="btn batch-delete-btn pull-right text-green icon-btn"
+                    data-toggle="tooltip" data-placement="bottom" title="Transfer"><i class="fa fa-arrow-left"></i>
+                    Transfer
+                </a>
+                <a id="transfer-update-btn"
+                    class="btn batch-delete-btn pull-right text-yellow icon-btn"
+                    data-toggle="tooltip" data-placement="bottom" title="TransferUpdate"><i class="fa fa-pencil"></i>
+                    Update
+                </a>
+            </div>
+
+            <table id="external-member-inclusion-table-case-4" class="table table-bordered table-striped"
+            style="width: 100%">
+                <thead>
+                <tr class="tr-text-center">
+                    <th>SL</th>
+                    <th>User Name</th>
+                    <th>Transferred Office Name</th>
+                    <th>New Designation</th>
+                    <th>Transferred Memo No</th>
+                    <th>Transfer Order</th>
+                    <th>Charge Handover Date</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="modal fade" id="user-detail-modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"> Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <table class="table table-responsive table-striped">
+                            <thead>
+                                <tr>
+                                <th>Designation</th>
+                                <th>Procurement Roles</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user-detail-table"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right col-md-12">
+                        <button type="button" class="btn custom-reset-btn" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="generate-link-modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"> </h4>
+                </div>
+                <form role="form" class="form-background" id="generate-link-form" action="" method="post" data-parsley-validate>
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                    <div class="modal-body">
+                    <div class="col-md-12">
+                        <div class="form-group very-compact-form-group col-md-3">
+                            <label>Case</label>
+                            <select class="form-control select2" style="width: 100%"
+                                    name="case">
+                                <option value="">-Select Option-</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-3" id="user_nid_for_case4" style="display: none;">
+                            <label>User NID</label>
+                            <input class="form-control" name="user_nid" type="number">
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-3" id="user_id_div" style="display: none;">
+                            <label>User ID</label>
+                            <input class="form-control" name="id" type="number">
+                        </div>
+
+
+{#                        <div class="form-group very-compact-form-group col-md-3" id="organization_div" style="display: none;">#}
+{#                            <label for="inputEmail3">Organization/ Institute</label>#}
+{#                            <select class="form-control select2"#}
+{#                                    style="width: 100%;"#}
+{#                                    name="organization"#}
+{#                                    data-parsley-errors-container="#org_name_error">#}
+{#                                <option value="">-Select Option-</option>#}
+{#                                <option value="LGED">LGED</option>#}
+{#                                <option value="LGIS">LGIS</option>#}
+{#                                <option value="e-GP LAB">e-GP LAB</option>#}
+{#                            </select>#}
+{#                            <span id="org_name_error" class="text-red"></span>#}
+{#                        </div>#}
+{#                        <div class="form-group very-compact-form-group col-md-3" name="office_category_div" id="office_category_div" style="display: none;">#}
+{#                            <label for="inputEmail3">Office Category</label>#}
+{#                            <select class="form-control select2" style="width: 100%;"#}
+{#                                    name="office_category"#}
+{#                                    data-parsley-errors-container="#office_cat_error">#}
+{#                                <option selected="selected" value="">-Select Option-</option>#}
+{#                                <option value="PAURASHAVA OFFICES">PAURASHAVA OFFICES</option>#}
+{#                            </select>#}
+{#                            <span id="office_cat_error" class="text-red"></span>#}
+{#                        </div>#}
+{#                        <div class="form-group very-compact-form-group col-md-3" id="office_name_div" style="display: none;">#}
+{#                            <label for="inputEmail3">Office Name</label>#}
+{#                            <select class="form-control select2" style="width: 100%;"#}
+{#                                    name="office_name"#}
+{#                                    data-parsley-errors-container="#office_name_error">#}
+{#                                <option selected="selected" value="">-Select Option-</option>#}
+{#                                <option value="112901">Sonatola Pourashava</option>#}
+{#                                <option value="481903">Kasba Pourashava</option>#}
+{##}
+{#                            </select>#}
+{#                            <span id="office_name_error" class="text-red"></span>#}
+{#                        </div>#}
+
+
+
+                            <div class="form-group very-compact-form-group col-md-3" id="organization_custom" style="display: none;">
+                                <label for="inputEmail3">Organization</label>
+                                <select class="form-control select2" id="organization_div" name="organization_div1" style="width: 100%;" data-parsley-errors-container="#org_name_error">
+                                    <option selected="selected" value="LGED">LGED</option>
+                                    <option value="LGIS">LGIS</option>
+                                    <option value="e-GP LAB">e-GP LAB</option>
+                                </select>
+                                <span id="org_name_error" class="text-red"></span>
+                            </div>
+
+                            <div class="form-group very-compact-form-group col-md-3" id="office_category_custom" style="display: none;">
+                                <label>Office Category</label>
+                                <select class="form-control select2 office-category-holder" name="office_category_div" id="office_category_div"
+                                        style="width: 100%;" data-parsley-errors-container="#office_cat_error">
+                                    <option selected="selected" value="">-Select Option-</option>
+                                    <option value="Additional Chief Engineer Office (HQ)">ACE Office (HQ)</option>
+                                    <option value="Project Office (HQ)">PD Office (HQ)</option>
+                                    <option value="SE Office (HQ)">SE Office (HQ)</option>
+                                    <option value="Unit (HQ)">Unit</option>
+                                </select>
+                                <span id="office_cat_error" class="text-red"></span>
+                            </div>
+
+                        <div class="form-group very-compact-form-group col-md-3" id="office_name_custom" style="display: none;">
+                            <label id="office_to_label" for="inputEmail3">Office Name</label>
+                            <select class="form-control select2" name="office_name" style="width: 100%;"
+                                    data-parsley-errors-container="#office_name_error">
+                                <option selected="selected" value="">-Select Option-</option>
+                            </select>
+                            <span id="office_name_error" class="text-red"></span>
+                        </div>
+
+                    </div>
+                </div>
+                    <div class="modal-footer">
+                        <div class="pull-right col-md-12">
+                            <button type="submit" class="btn custom-submit-btn" >Submit</button>
+                            <button type="button" class="btn custom-reset-btn" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="new-user-update-modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title" align="center"> External Committee Member Inclusion Update(Case: <span id="case_no"></span>)</h3>
+
+                </div>
+                <form role="form" id="new-update-profile-form" enctype="multipart/form-data"
+                      data-parsley-validate>
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
+                    <div class="modal-body">
+                        <div class="box-body">
+                            <div id="office_creation_update">
+                <label><span style="font-family: Kalpurush; color: red">A. মনোনয়নপ্রাপ্ত কর্মকর্তার দপ্তরের তথ্যাদি</span> (Nominee Office Information)</label>
+                <div class="new-border-box col-md-12">
+
+
+                    <div class="form-group very-compact-form-group col-md-12" id="office_category">
+                        <div class="form-group very-compact-form-group col-md-2">
+                            <label for="inputEmail3">Office Category: </label>
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-10">
+                            <input type="radio" name="office_category" id="aceo" value="Additional Chief Engineer Office (HQ)">
+                            <span class="checkmark">ACE Office (HQ)</span>
+                            <input type="radio" name="office_category" id="po" value="Project Office (HQ)">
+                            <span class="checkmark">PD Office (HQ)</span>
+                            <input type="radio" name="office_category" id="seo" value="SE Office (HQ)">
+                            <span class="checkmark">SE Office (HQ)</span>
+                            <input type="radio" name="office_category" id="unit" value="Unit (HQ)">
+                            <span class="checkmark">Unit</span>
+                            <span id="office_cat_error" class="text-red"></span>
+                        </div>
+                    </div>
+                    <div class="form-group very-compact-form-group col-md-12">
+                        <div class="form-group very-compact-form-group col-md-12" id="office_name">
+                        <div class="form-group very-compact-form-group col-md-2">
+                            <b>Office/Project Name (Full): <span
+                                    style="color: red">*</span></b>
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-10">
+                            <input name="office_name" type="text" class="form-control" placeholder="(In English)">
+                        </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            <br><br><br><br><br><br>
+            </div>
+
+                            <div>
+            <br><br>
+                <label><span style="font-family: Kalpurush; color: red">B. মনোনয়নপ্রাপ্ত কর্মকর্তার ব্যক্তিগত তথ্যাদি</span> (Nominee Personal Information)</label>
+                <div class="new-border-box col-md-12">
+                    <div class="row col-md-12">
+                        <div class="form-group very-compact-form-group col-md-12 required_field">
+                            <div class="form-group very-compact-form-group col-md-2">
+                                <label for="inputEmail3">Name (English): </label>
+                            </div>
+                            <div class="form-group very-compact-form-group col-md-10">
+                                <input type="text" class="form-control" name="first_name"
+                                       data-parsley-pattern="/^[-@./#&+\w\s]*$/"
+                                       data-required-message="This field is required"
+                                       data-parsley-error-message="This field should be English only"
+                                       data-parsley-errors-container="#first_name_error"
+                                       data-parsley-required="">
+                                <span id="first_name_error" class="text-red"></span>
+                            </div>
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-6" required_field>
+                            <div class="form-group very-compact-form-group col-md-4">
+                                <label>Designation: <span style="color: red">*</span></label>
+                            </div>
+                            <div class="form-group very-compact-form-group col-md-8" id="nom_des">
+                                <input type="radio" id="se" name="designation" value="7" required>
+                                <span class="checkmark">SE</span>
+                                <input type="radio" id="pd" name="designation" value="201">
+                                <span class="checkmark">PD</span>
+                                <input type="radio" id="dpd" name="designation" value="202">
+                                <span class="checkmark">DPD</span>
+                                <input type="radio" id="sae" name="designation" value="10">
+                                <span class="checkmark">Sr. AE</span>
+                                <input type="radio" id="xen" name="designation" value="8">
+                                <span class="checkmark">XEN</span>
+                                <input type="radio" id="ae" name="designation" value="11">
+                                <span class="checkmark">AE</span>
+
+                                <span id="designation_error"></span>
+                            </div>
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-6 required_field">
+                            <div class="form-group very-compact-form-group col-md-3">
+                                <label for="inputEmail3">NID: </label>
+                            </div>
+                            <div class="form-group very-compact-form-group col-md-6">
+                                <input type="text" class="form-control" name="nid"
+                                       data-parsley-required
+                                       data-parsley-type="digits" data-parsley-maxlength="19"
+                                       data-parsley-minlength="10"
+                                       data-parsley-maxlength-message="NID number can be max 19 digits long"
+                                       data-parsley-minlength-message="NID number should be min 10 digits long"
+                                       data-parsley-type-message="NID number should be English numeric."
+                                       data-parsley-errors-container="#nid_error">
+                                <span id="nid_error" class="text-red"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="form-group very-compact-form-group col-md-6 required_field">
+                            <div class="form-group very-compact-form-group col-md-4">
+                                <label for="inputEmail3">Personal Mobile No: </label>
+                            </div>
+                            <div class="form-group very-compact-form-group col-md-6">
+                                <input type="text" class="form-control" name="personal_mobile_no"
+                                       data-parsley-type="digits" data-parsley-required=""
+                                       data-parsley-maxlength="11" data-parsley-minlength="11"
+                                       data-parsley-maxlength-message="Mobile number should be 11 digits long"
+                                       data-parsley-minlength-message="Mobile number should be 11 digits long"
+                                       data-parsley-type-message="Mobile number should be English numeric."
+                                       data-parsley-errors-container="#mobile_no_error">
+                                <span id="mobile_no_error" class="text-red"></span>
+                            </div>
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-6 required_field">
+                            <div class="form-group very-compact-form-group col-md-3">
+                                <label for="inputEmail3" id="official_email_label_add">Official Email: </label>
+                            </div>
+                            <div class="form-group very-compact-form-group col-md-6">
+                                <input type="email" class="form-control" name="official_email"
+                                       data-parsley-errors-container="#email_error"
+                                       data-parsley-required>
+                                <span id="email_error" class="text-red"></span>
+                            </div>
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-6 required_field">
+                            <div class="form-group very-compact-form-group col-md-4">
+                                <label>Date of Birth: </label>
+                            </div>
+                            <div class="form-group very-compact-form-group col-md-6">
+                                <input name="date_of_birth" class="form-control pull-right date"
+                                       style="width: 100%" autocomplete="off"
+                                       id="date_of_birth_add" data-parsley-required
+                                       data-parsley-errors-container="#date_of_birth_error">
+                                <span id="date_of_birth_error"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="form-group very-compact-form-group col-md-2">
+                            <label>Role in e-GP: <span style="color: red">*</span></label>
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-4" required_field>
+                            <input type="radio" id="val" name="procurement_roles" value="val" required>
+                            <span class="checkmark">PE/TOC/TEC</span><br>
+                            <input type="radio" id="val2" name="procurement_roles" value="val2" required>
+                            <span class="checkmark">TOC/TEC</span><br>
+                            <input type="radio" id="no_vals" name="procurement_roles" value="no_vals">
+                            <span class="checkmark">No role</span>
+
+                            <span id="proc_role_error"></span>
+                        </div>
+
+
+                        <div class="form-group very-compact-form-group col-md-6" id="e_gp_id_choose">
+                            <div class="form-group very-compact-form-group col-md-2">
+                                <label for="inputEmail3">e-GP ID: </label>
+                            </div>
+                            <div class="form-group very-compact-form-group col-md-10">
+                                <input type="email" class="form-control" name="e_gp_user_id_for_govt"
+                                       data-parsley-error-message="This value should be a valid e-GP ID"
+                                       data-parsley-errors-container="#e_gp_id_govt_error">
+                                <span id="e_gp_id_govt_error"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="form-group very-compact-form-group col-md-3">
+                            <label>3 weeks PPR Training: <span
+                                    style="color: red">*</span> </label>
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-3">
+                            <p>
+                                <input type="radio" id="yes" value="True" name="PPR_training">&nbsp;Yes&nbsp;&nbsp;
+                                <input type="radio" id="no" value="False" name="PPR_training" required>&nbsp;No
+                            </p>
+                        </div>
+                        <div id="ppr_training_add" style="display: none">
+                            <div class="form-group very-compact-form-group col-md-3"
+                                 id="start_date_add_div">
+                                <div class="form-group very-compact-form-group col-md-4">
+                                    <label>Start Date: </label>
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-8">
+                                    <input type="text" autocomplete="off"
+                                           name="start_date" class="form-control date">
+                                </div>
+                            </div>
+                            <div class="form-group very-compact-form-group col-md-3" id="venue_add_div">
+                                <div class="form-group very-compact-form-group col-md-5" align="right">
+                                    <label>Venue: </label>
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-7">
+                                    <input type="radio" id="venue_add1" value="12" name="venue">&nbsp;ESCB&nbsp;&nbsp;
+                                    <input type="radio" id="venue_add2" value="13" name="venue">&nbsp;BIMS
+
+                                    <span id="venue_add_error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+                            <div id="focal_info_update">
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                <label><span style="font-family: Kalpurush; color: red">C. সংশ্লিষ্ট দপ্তরের ক্রয়কারীর তথ্য</span> (Information of PE)</label>
+                <div class="new-border-box col-md-12">
+                    <div class="form-group very-compact-form-group col-md-12">
+                        <div class="form-group very-compact-form-group col-md-2">
+                            <label for="inputEmail3">Designation of PE : </label>
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-10" id="foc_des">
+                            <input type="radio" id="f_se" name="focal_designation" value="7">
+                            <span class="checkmark">SE</span>
+                            <input type="radio" id="f_pd" name="focal_designation" value="201">
+                            <span class="checkmark">PD</span>
+                            <input type="radio" id="f_xen" name="focal_designation" value="8">
+                            <span class="checkmark">XEN</span>
+                            <span id="office_cat_error" class="text-red"></span>
+                        </div>
+
+                        <span id="focal_design_error"></span>
+                    </div>
+                    <div class="form-group very-compact-form-group col-md-12">
+                        <div class="form-group very-compact-form-group col-md-2">
+                            <label for="inputEmail3">Official email of PE: </label>
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-10">
+                            <input type="email" class="form-control" name="user_id_for_pro_info"
+                                   data-parsley-errors-container="#user_id_error">
+                        </div>
+
+                        <span id="user_id_error" class="text-red"></span>
+                    </div>
+                </div>
+
+            </div>
+                            <div id="govt_info_update">
+                <br><br><br><br><br><br>
+                <label><span style="font-family: Kalpurush; color: red">D. সংশ্লিষ্ট দপ্তরে PE ব্যতীত অন্যান্য ১ম শ্রেণীর কর্মকর্তার তথ্য</span></label>
+                <div class="new-border-box col-md-12">
+                    <div class="form-group very-compact-form-group col-md-12">
+                        <div class="form-group very-compact-form-group col-md-2">
+                            <label>Designation</label>
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-3">
+                            <label>সংশ্লিষ্ট পদে কর্মরত কর্মকর্তার সংখ্যা</label>
+                        </div>
+                    </div>
+                    <div class="form-group very-compact-form-group col-md-12">
+                        <div class="form-group very-compact-form-group col-md-2">
+                            <span>DPD</span>
+                            <input value="202" type="hidden" name="govt_designation1">
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-1">
+                            <input type="text" class="form-control" name="gov_user_number1"
+                                   data-parsley-type="digits"
+                                   data-parsley-type-message="Designation number should be English numeric."
+                                   data-parsley-errors-container="#designation_error">
+                            <span id="designation_error" class="text-red"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group very-compact-form-group col-md-12">
+                        <div class="form-group very-compact-form-group col-md-2">
+                            <span>XEN</span>
+                            <input value="8" type="hidden" name="govt_designation2">
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-1">
+                            <input type="text" class="form-control" name="gov_user_number2"
+                                   data-parsley-type="digits"
+                                   data-parsley-type-message="Designation number should be English numeric."
+                                   data-parsley-errors-container="#designation_error">
+                            <span id="designation_error" class="text-red"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group very-compact-form-group col-md-12">
+                        <div class="form-group very-compact-form-group col-md-2">
+                            <span>Sr.AE</span>
+                            <input value="10" type="hidden" name="govt_designation3">
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-1">
+                            <input type="text" class="form-control" name="gov_user_number3"
+                                   data-parsley-type="digits"
+                                   data-parsley-type-message="Designation number should be English numeric."
+                                   data-parsley-errors-container="#designation_error">
+                            <span id="designation_error" class="text-red"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group very-compact-form-group col-md-12">
+                        <div class="form-group very-compact-form-group col-md-2">
+                            <span>AE</span>
+                            <input value="11" type="hidden" name="govt_designation4">
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-1">
+                            <input type="text" class="form-control" name="gov_user_number4"
+                                   data-parsley-type="digits"
+                                   data-parsley-type-message="Designation number should be English numeric."
+                                   data-parsley-errors-container="#designation_error">
+                            <span id="designation_error" class="text-red"></span>
+                        </div>
+                    </div>
+                    <div class="form-group very-compact-form-group col-md-6">
+                        <div class="form-group very-compact-form-group col-md-5">
+                            <h3>Total Govt. Users: </h3>
+                            <input value="11" type="hidden" name="govt_designation4">
+                        </div>
+                        <div class="form-group very-compact-form-group col-md-1">
+                            <h3 id="total_gov_user"></h3>
+                        </div>
+                    </div>
+
+
+            </div>
+            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="pull-right col-md-12">
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                            <button type="submit" class="btn custom-submit-btn new_user_update">Submit</button>
+                            <button type="button" class="btn custom-reset-btn" data-dismiss="modal">Close</button>
+                        </div>
+{#                             id="new-update-user-reset-btn" type="reset" #}
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ext-transfer-update-modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title" align="center"> External Committee Member Inclusion Update(Case: 4)</h3>
+
+                </div>
+                <form role="form" id="ext-transfer-update-form" enctype="multipart/form-data"
+                      data-parsley-validate>
+                    <div class="modal-body">
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
+                        <div class="box-body">
+                            <div class="new-border-box col-md-12 hide_on_edit">
+                                <div class="form-group very-compact-form-group col-md-4 required_field">
+                                    <label for="inputEmail3">Select Type</label>
+                                    <select class="form-control select2" name="status" style="width: 100%;"
+                                            data-parsley-required="" data-parsley-errors-container="#transfer_type_error">
+                                        <option value="">-Select Option-</option>
+                                        <option value="1">Transfer</option>
+                                        <option value="0">Promotion</option>
+                                    </select>
+                                    <span id="#transfer_type_error"></span>
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-4" id="transfer_type_div">
+                                    <label for="inputEmail3">Transfer Type</label>
+                                    <select class="form-control select2" id="transfer_type" style="width: 100%;">
+                                        <option value="">-Select Option-</option>
+                                        <option value="to">Transfer To</option>
+                                        <option value="from">Transfer From</option>
+                                    </select>
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-4" id="promotion_type_div" style="display: none;">
+                                    <label for="inputEmail3">Promotion Type</label>
+                                    <select class="form-control select2" id="promotion_type" style="width: 100%;">
+                                        <option value="">-Select Option-</option>
+                                        <option value="to">Promotion To</option>
+                                        <option value="from">Promotion From</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <label id="prev_label" class="row col-md-12 hide_on_edit">Previous Office Details</label>
+                            <div class="new-border-box col-md-12 hide_on_edit">
+                                <div class="form-group very-compact-form-group col-md-4" style="display: none;">
+                                    <label for="inputEmail3">Office ID: </label>
+                                    <span id="previous_office_id"></span>
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-4" style="display: none;">
+                                    <label for="inputEmail3">Designation ID: </label>
+                                    <span id="previous_designation_id"></span>
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-4">
+                                    <label for="inputEmail3">Name(English): </label>
+                                    <span id="previous_english_name"></span>
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-4">
+                                    <label for="inputEmail3">Office: </label>
+                                    <span id="previous_office"></span>
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-4">
+                                    <label for="inputEmail3">Designation: </label>
+                                    <span id="previous_designation"></span>
+                                </div>
+                                <div id="detail_toggle" style="display: none">
+                                    <div class="form-group very-compact-form-group col-md-4">
+                                        <label for="inputEmail3">Organization: </label>
+                                        <span id="previous_organization"></span>
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-4">
+                                        <label>Office Category: </label>
+                                        <span id="previous_office_category"></span>
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-4">
+                                        <label for="inputEmail3">Official Mobile No: </label>
+                                        <span id="previous_official_mobile"></span>
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-4">
+                                        <label for="inputEmail3">Official Email: </label>
+                                        <span id="previous_official_email"></span>
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-4">
+                                        <label>Name(Bangla): </label>
+                                        <span id="previous_bangla_name"></span>
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-4">
+                                        <label for="inputEmail3">Personal Mobile No: </label>
+                                        <span id="previous_personal_mobile"></span>
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-4">
+                                        <label for="inputEmail3">Personal Email: </label>
+                                        <span id="previous_personal_email"></span>
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-4">
+                                        <label for="inputEmail3">NID: </label>
+                                        <span id="previous_nid"></span>
+                                    </div>
+
+                                    <div class="form-group very-compact-form-group col-md-4">
+                                        <label for="inputEmail3">Gender: </label>
+                                        <span id="previous_gender"></span>
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-4">
+                                        <label for="inputEmail3">Date of Birth: </label>
+                                        <span id="previous_date_of_birth"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group very-compact-form-group pull-right">
+                                    <button type="button" class="btn btn-xs btn-info" id="details">Details</button>
+                                </div>
+                            </div>
+                            <label id="new_label" class="row col-md-12">New Office Details</label>
+                            <div class="new-border-box col-md-12">
+                                <div class="form-group very-compact-form-group col-md-4" style="width: 100%">
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-3">
+                                    <label for="inputEmail3">Organization</label>
+                                    <select class="form-control select2" name="organization" id="organization" style="width: 100%;">
+                                        <option value="">-Select Option-</option>
+                                        <option value="LGED">LGED</option>
+                                        <option value="LGIS">LGIS</option>
+                                        <option value="e-GP LAB">e-GP LAB</option>
+                                    </select>
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-3">
+                                    <label>Office Category</label>
+                                    <select class="form-control select2 office-category-holder" name="office_category" id="office_category"
+                                            style="width: 100%;">
+                                        <option selected="selected" value="">-Select Option-</option>
+                                    </select>
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-3">
+                                    <label id="office_to_label" for="inputEmail3">Office To</label>
+                                    <select class="form-control select2" name="transferred_office" id="transferred_office" style="width: 100%;"
+                                            data-parsley-required data-parsley-errors-container="#office_to_error">
+                                        <option selected="selected" value="">-Select Option-</option>
+                                    </select>
+                                    <span id="office_to_error" class="text-red"></span>
+                                </div>
+
+                                <div class="form-group very-compact-form-group col-md-3">
+                                    <label for="inputEmail3">Designation</label>
+                                    <select class="form-control select2" name="new_designation" style="width: 100%;"
+                                            data-parsley-required data-parsley-errors-container="#designation_error">
+                                        <option selected="selected" value="">-Select Option-</option>
+                                    </select>
+                                    <span id="designation_error" class="text-red"></span>
+                                </div>
+                                <div id="changeable_div" style="display: none">
+                                    <div class="form-group very-compact-form-group col-md-3">
+                                        <label for="inputEmail3">NID</label>
+                                        <input type="number" class="form-control" id="nid_search" placeholder="Example: 3918515579971">
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-3">
+                                        <label for="inputEmail3">Name</label>
+                                        <input type="text" class="form-control" id="first_name_search" placeholder="Example: Md. Rasel Hossain">
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-3">
+                                        <label for="inputEmail3">Date of Birth</label>
+                                        <input id="date_of_birth_search" class="form-control" placeholder="Example: 20-02-2019">
+                                    </div>
+                                    <div class="form-group very-compact-form-group col-md-3">
+                                        <label for="inputEmail3">Phone</label>
+                                        <input type="text" class="form-control" id="mobile_no_search" placeholder="Example: 01717233445">
+                                    </div>
+                                    <div class="form-group very-compact-form-group" style="padding-left: 0;">
+                                         <table id="search-table-for-transfer" class="table table-bordered table-condensed" style="background-color: #ffffffab;">
+                                            <thead>
+                                            <tr class="tr-text-center">
+                                                <th class="th-center-text">Select User</th>
+                                                <th class="th-center-text">Office Name</th>
+                                                <th class="th-center-text">Region</th>
+                                                <th class="th-center-text">District</th>
+                                                <th class="th-center-text">Picture</th>
+                                                <th class="th-center-text">Name (English)</th>
+                                                <th class="th-center-text">Name (Bangla)</th>
+                                                <th class="th-center-text">Designation</th>
+                                                <th class="th-center-text">Personal<br>Mobile No</th>
+                                                <th class="th-center-text">Official<br>Mobile No</th>
+                                                <th class="th-center-text">Official Email</th>
+                                                <th class="th-center-text">Personal Email</th>
+                                                <th class="th-center-text">NID</th>
+                                                <th class="th-center-text">Date of birth</th>
+                                                <th class="th-center-text">Gender</th>
+                                            </tr>
+                                            </thead>
+                                         </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="row col-md-12">Transfer Related Details</label>
+                            <div class="new-border-box col-md-12">
+                                <div class="form-group very-compact-form-group col-md-3 required_field">
+                                    <label for="inputEmail3">Transfer Memo No.</label>
+                                    <input type="number" class="form-control" name="transfer_memo_no"
+                                           placeholder="Example: 1124" data-parsley-required
+                                           data-parsley-errors-container="#memo_no_error">
+                                    <span id="memo_no_error" class="text-red"></span>
+                                </div>
+{#                                <div class="form-group very-compact-form-group col-md-3 hide_in_to">#}
+{#                                    <label for="inputEmail3">Charge Takeover Date</label>#}
+{#                                    <input type="text" autocomplete="off" class="form-control date" id="charge_takeover_date"#}
+{#                                           name="charge_takeover_date"#}
+{#                                           placeholder="Example: dd-mm-yyyy"#}
+{#                                           data-parsley-errors-container="#charge_takeover_date_error">#}
+{#                                    <span id="charge_takeover_date_error" class="text-red"></span>#}
+{#                                </div>#}
+                                <div class="form-group very-compact-form-group col-md-3 hide_in_from">
+                                    <label for="inputEmail3">Charge Handover Date</label>
+                                    <input type="text" autocomplete="off" class="form-control date" id="charge_handover_date"
+                                           name="charge_handover_date"
+                                           placeholder="Example: dd-mm-yyyy"
+                                           data-parsley-errors-container="#charge_handover_date_error">
+                                    <span id="charge_handover_date_error" class="text-red"></span>
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-3">
+                                    <label for="inputEmail3">Transfer Order</label>
+                                    <input type="file" class="" name="transfer_order" id="transfer-order">
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-3 hide_in_to" style="display: none">
+                                    <label for="inputEmail3">User's State</label>
+                                    <select class="form-control select2" style="width: 100%" name="state">
+                                        <option value="">-Select Option-</option>
+                                        <option value="Add">Newly added</option>
+                                        <option value="Update">Updated</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="pull-right col-md-12">
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                            <button type="submit" class="btn custom-submit-btn ext_transfer_update">Submit</button>
+                            <button type="button" class="btn custom-reset-btn" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    {{ super() }}
+    {% include "base-parts/select2_script.html" %}
+    {% include "base-parts/responsive_datatable_script.html" %}
+    {% include "base-parts/js/date_picker.html" %}
+    <script src="{{ STATIC_URL }}dist/js/pipeline.datatable.js"></script>
+    <script>
+
+        $(function () {
+            let user_permissions = {{ user_permissions | safe }};
+            $('select[name="organization_div1"]').attr('disabled', 'disabled');
+            init_external_member_inclusion_history(user_permissions);
+        });
+    </script>
+{% endblock %}

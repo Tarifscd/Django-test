@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %} PRO {% endblock %} INFO</title>
+    <link rel="icon" href="{{ MEDIA_URL }}img/logo.png">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="{{ NODE_MODULES_URL }}html5shiv/dist/html5shiv.min.js"></script>
+        <script src="{{ NODE_MODULES_URL }}respond.js/dest/respond.min.js"></script>
+    <![endif]-->
+
+
+    {% block css %}
+        {% include "base-parts/css.html" %}
+        <style>
+            h4 {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+            .main-header {
+                max-height: min-content !important;
+            }
+        </style>
+    {% endblock %}
+</head>
+<!-- ADD THE CLASS layout-boxed TO GET A BOXED LAYOUT -->
+<body class="hold-transition skin-green-light layout-boxed sidebar-mini">
+<header class="main-header">
+    {% block main_header %}
+        <nav class="navbar navbar-static-top m-l-0" style="background-color: #196a92 !important;">
+            <div class="container  responsive-container mb-responsive-container">
+                <a id="back2Top" title="Back to top" href="#">&#10148;</a>
+                <div class="container navbar-header responsive-navbar-header">
+                    <div class="pull-left logo-title-sub-menu">
+                        {#                            <a href={{ url('lged:index') }} class="navbar-brand logo-responsive">#}
+                        <a href="{{ url("lged:index") }}" class="navbar-brand logo-responsive">
+                            <img src="{{ MEDIA_URL }}img/logo.png" class="img-md img-responsive">
+                        </a>
+                        <div class="pull-left title-responsive" id="title-full-text">
+                            <ul class="nav navbar-nav">
+                                <li class="">
+                                    <a href="{{ url("lged:index") }}">
+                                        <h4 style="margin-left: -15px">Procurement Information
+                                            Management System <br> for LGI & LGED</h4><span
+                                            class="sr-only">(current)</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pull-left title-responsive-mini navbar-custom-menu" id="title-mini-text">
+                            <ul class="nav navbar-nav">
+                                <li class="">
+                                    <a href={{ url('lged:index') }}>
+                                        LGED
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pull-right main-sub-menu">
+                        <div class="" id="navbar-collapse">
+                            <div class="navbar-custom-menu responsive-menu">
+                                <ul class="nav navbar-nav">
+                                    {% if user.is_authenticated %}
+                                        <li class=""><a href={{ url('lged:index') }}><i id="home-icon"
+                                                                                    class="fa fa-home"></i><span
+                                            id="home-text">Home</span> <span
+                                            class="sr-only">(current)</span></a></li>
+                                    {% endif %}
+                                    {% if user.is_authenticated %}
+                                        <li><a href='{{ url('lged:profile_details',id=user.id) }}'>Dashboard</a></li>
+                                    {% endif %}
+                                    {#                                        <li><a href="#"><i id="about-us-icon" class="fa fa-users"></i><span#}
+                                    {#                                                id="about-us-text">About Us</span> </a></li>#}
+                                    {#                                        <li><a href="#"><i id="contact-us-icon" class="fa fa-phone"></i><span#}
+                                    {#                                                id="contact-us-text">Contact Us</span> </a></li>#}
+
+                                    {% if user.is_authenticated %}
+                                        <li class="dropdown user user-menu">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                {% if user.profile is not none and user.profile.image_name %}
+                                                    <img src="{{ MEDIA_URL }}avatars/{{ user.profile.image_name }}"
+                                                         class="user-image"
+                                                         alt="">
+                                                {% else %}
+                                                    <img src="{{ MEDIA_URL }}avatars/default_profile_pic.jpg"
+                                                         class="user-image"
+                                                         alt="">
+                                                {% endif %}
+                                                <span class="hidden-xs">
+                                                {% if user.first_name %}
+                                                    {{ user.first_name }}
+                                                {% else %}
+                                                    User Name
+                                                {% endif %}
+                                            </span>
+                                            </a>
+                                            <ul class="dropdown-menu" id="user-sub-profile">
+                                                <!-- User image -->
+                                                <li class="user-header">
+                                                    {% if user.profile is not none and user.profile.image_name %}
+                                                        <img src="{{ MEDIA_URL }}avatars/{{ user.profile.image_name }}"
+                                                             class="user-image"
+                                                             alt="">
+                                                    {% else %}
+                                                        <img src="{{ MEDIA_URL }}avatars/default_profile_pic.jpg"
+                                                             class="user-image"
+                                                             alt="">
+                                                    {% endif %}
+
+                                                    <p>
+                                                        {{ user.first_name }} -
+                                                        {% if user.profile is not none  and user.profile.designation %}
+                                                            {{ user.profile.designation.designation }}
+                                                        {% endif %}
+                                                    </p>
+                                                </li>
+                                                <!-- Menu Footer-->
+                                                <li class="user-footer">
+                                                    {#                                                    <div class="pull-left">#}
+                                                    {#                                                        <a href='{{ url('lged:profile_details',id=user.id) }}'#}
+                                                    {#                                                           class="btn btn-success btn-flat">Profile</a>#}
+                                                    {#                                                    </div>#}
+                                                    {#                                                    <div class="pull-right">#}
+                                                    {#                                                        <a href="#" id="logout-btn"#}
+                                                    {#                                                           class="btn btn-success btn-flat">Sign#}
+                                                    {#                                                            out</a>#}
+                                                    {#                                                    </div>#}
+                                                    <div class="pull-right" style="width: 49%">
+                                                        <a href="#" id="edit_user_profile" style="margin-right: 5px;margin-left: 5px;"
+                                                           class="btn btn-success btn-flat">Edit User Profile</a>
+                                                    </div>
+                                                    <div class="pull-right" id="change-pass-div">
+                                                        <a href="#" id="change-pass-btn"
+                                                           class="btn btn-success btn-flat">Changefff Password</a>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    {% else %}
+                                        {% block dt_user_login_info %}
+                                            <li class="dropdown tasks-menu">
+                                                <!-- Menu Toggle Button -->
+                                                <form method="post" id="sign-in-form"
+                                                      data-parsley-validate>
+                                                    {% csrf_token %}
+
+                                                    <div class="col-md-12">
+                                                        <br>
+                                                        <div class="col-md-5 col-xs-8 col-sm-4">
+                                                            <div class="form-group very-compact-form-group has-feedback">
+                                                                <input type="text" class="form-control"
+                                                                       placeholder="Email" name="email"
+                                                                       id="username_error">
+                                                                <ul class="custom-parsley-errors-list filled"
+                                                                    id="username_error_view">
+                                                                </ul>
+                                                                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5 col-xs-8 col-sm-4">
+                                                            <div class="form-group very-compact-form-group has-feedback">
+                                                                <input type="password"
+                                                                       class="form-control"
+                                                                       placeholder="Password"
+                                                                       name="password"
+                                                                       id="password_error">
+                                                                <p class="custom-parsley-errors-list"
+                                                                    id="password_error_view">
+                                                                </p>
+                                                                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                                                                <!-- Tarif_Updated -->
+                                                                <a href="pages/user-type-query.html" style="color: white"
+                                                                   data-toggle="modal"
+                                                                   data-target="#modal-default-email"
+                                                                   >Forgotten Password?</a>
+                                                                <!-- /.modal-dialog -->
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                        {#                                                                    <div class="col-md-4">#}
+                                                        {#                                                                        <!--<div class="checkbox icheck">#}
+                                                        {#                                                                            <label>#}
+                                                        {#                                                                                <input type="checkbox"> Remember Me#}
+                                                        {#                                                                            </label>#}
+                                                        {#                                                                        </div>-->#}
+                                                        {#                                                                    </div>#}
+                                                        <!-- /.col -->
+                                                        <div class="col-md-2 col-xs-8 col-sm-4">
+                                                            <div class="form-group very-compact-form-group">
+                                                                <button type="submit" id="sign-in-btn"
+                                                                        class="btn btn-success btn-block btn-flat">
+                                                                    Log In
+                                                                </button>
+                                                            </div>
+                                                            <input type="hidden" name="next"
+                                                                   value="{{ next }}"/>
+                                                        </div>
+{#                                                        <div class="col-md-2">#}
+{##}
+{#                                                        </div>#}
+                                                        <!-- /.col -->
+                                                    </div>
+                                                </form>
+{#                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
+{#                                                    <i class="fa fa-sign-in"></i>&nbsp;Login#}
+{#                                                    <span class="caret"></span>#}
+{#                                                </a>#}
+                                                <ul class="dropdown-menu responsive-login sign-in-custom">
+                                                    <li class="">
+                                                        <div class="login-box-body">
+                                                            <p class="login-box-msg">Log in to start your session
+                                                            </p>
+
+
+                                                            <!-- /.social-auth-links -->
+
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        {% endblock %}
+                                    {% endif %}
+                                    {% if user.is_authenticated %}
+                                        <li><a href="#" id="logout-btn">Log out</a></li>
+                                    {% endif %}
+
+                                    {#                                        <li class="dropdown language-li">#}
+                                    {#                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
+                                    {#                                                <i class="fa fa-globe"></i><span#}
+                                    {#                                                    id="language-text">&nbsp;Language</span>#}
+                                    {#                                                <span class="caret"></span></a>#}
+                                    {#                                            <ul class="dropdown-menu" role="menu">#}
+                                    {#                                                <li><a href="#">English</a></li>#}
+                                    {#                                                <li><a href="#">Bangla</a></li>#}
+                                    {#                                            </ul>#}
+                                    {#                                        </li>#}
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+
+
+                <!-- /.navbar-collapse -->
+                <!-- Navbar Right Menu -->
+
+                <!-- /.navbar-custom-menu -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+    {% endblock %}
+</header>
+<!-- Site wrapper -->
+<div class="wrapper">
+
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper m-l-0 home-bg">
+        {% block content %}
+        {% endblock %}
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    </div>
+
+<div class="modal fade change-password-modal" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Change Password</h4>
+            </div>
+            <form id="change-password-form" data-parsley-validate>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-md-12 required_field">
+                            <label>Old Password</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-key"></i>
+                                </div>
+                                <input type="password" class="form-control" name="password"
+                                       data-parsley-required data-parsley-errors-container="#previous_pass_error">
+                            </div>
+                            <span id="previous_pass_error" class="text-red"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12 required_field">
+                            <label>New Password</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-key"></i>
+                                </div>
+                                <input type="password" id="new_password" class="form-control" name="new_password"
+                                       data-parsley-required data-parsley-errors-container="#new_pass_error">
+                            </div>
+                            <span id="new_pass_error" class="text-red"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12 required_field">
+                            <label>Confirm New Password</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-key"></i>
+                                </div>
+                                <input type="password" class="form-control" data-parsley-equalto="#new_password"
+                                       data-parsley-required data-parsley-errors-container="#confirm_pass_error">
+                            </div>
+                            <span id="confirm_pass_error" class="text-red"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn custom-submit-btn">Submit</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+
+</div>
+<!-- ./wrapper -->
+<footer class="main-footer m-l-0" style="background-color: #196a92; color: white;padding: 15px;">
+    {% block footer %}
+        <!-- To the right -->
+        <div class="pull-right hidden-xs">
+            &nbsp;
+        </div>
+        <!-- Default to the left -->
+        <div class="col-md-offset-4">
+            <strong>Copyright &copy; 2018, <span style="color: #38fff0;">Procurement Unit, LGED</span>. </strong>All
+            rights reserved.
+            <strong>Powered By,&nbsp;<img style="padding-bottom: 14px;" height="40px"
+                                          src="{{ MEDIA_URL }}img/infosapex.png" alt="Infosapex"></strong>.
+        </div>
+        <div class="col-md-offset-4">
+            {#            <b>Contact:</b> xen.procurement@lged.gov.bd, <b>Phone:</b> 02-8181103#}
+        </div>
+    {% endblock %}
+</footer>
+{% block script %}
+    {% include "base-parts/script.html" %}
+    <script src="{{ NODE_MODULES_URL }}parsleyjs/dist/parsley.js"></script>
+    <script>
+
+        $(document).on('keyup', '#password_error', function () {
+            if (!$(this).val()) {
+                $('#password_error_view').empty();
+                $('#password_error_view').append('<li class="parsley-required">This value is required.</li>');
+            } else {
+                $('#password_error_view').empty();
+            }
+
+        });
+
+        $(document).on('keyup', '#username_error', function () {
+            if (!$(this).val()) {
+                $('#username_error_view').empty();
+                $('#username_error_view').append('<li class="parsley-required">This value is required.</li>');
+            } else {
+                let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                if (re.test($(this).val())) {
+                    $('#username_error_view').empty();
+                } else {
+                    $('#username_error_view').empty();
+                    $('#username_error_view').append('<li class="parsley-required">This value should be a valid email.</li>');
+                }
+            }
+
+        });
+
+        let user_email = '{{ user.email }}';
+        function objectifyForm(formArray) {//serialize data function
+
+            var returnArray = {};
+            for (var i = 0; i < formArray.length; i++) {
+                returnArray[formArray[i]['name']] = formArray[i]['value'];
+            }
+            return returnArray;
+        }
+
+        $(window).scroll(function () {
+            var height = $(window).scrollTop();
+            if (height > 100) {
+                $('#back2Top').fadeIn();
+            } else {
+                $('#back2Top').fadeOut();
+            }
+        });
+        $('#edit_user_profile').on('click', function () {
+            let user_id = '{{ user.id }}';
+            window.location = '/lged/users/focal_point/?' + user_id;
+        });
+        $(document).ready(function () {
+            $("#back2Top").click(function (event) {
+                event.preventDefault();
+                $("html, body").animate({scrollTop: 0}, "slow");
+                return false;
+            });
+
+        });
+
+        $('#change-pass-btn').on('click', function () {
+            $('.change-password-modal').modal('toggle');
+        });
+
+        $('#change-password-form').parsley().on('form:submit', function () {
+            let x = $('#change-password-form').serializeArray();
+            console.log(x);
+            let jsonData = objectifyForm(x);
+            jsonData['email'] = user_email;
+            console.log(jsonData);
+
+            let jsonCallBack = callAjax('/lged/api/v1/simple/change/password/', 'POST', jsonData);
+            jsonCallBack.done(function (data) {
+                console.log(data);
+                if (data === "OK") {
+                    notify('Password updated successfully', 'success');
+                    setTimeout(function () {
+                        console.log("redirect");
+                        window.location = '/';
+                    }, 300);
+                } else if (data === "NO") {
+                    notify('Old password is not correct!', 'danger');
+                }
+            });
+            jsonCallBack.fail(function (request) {
+                showError(request);
+            });
+            return false; // Don't submit form for this demo
+        });
+
+    </script>
+
+{% endblock %}
+
+
+</body>
+</html>
