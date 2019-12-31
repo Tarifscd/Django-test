@@ -27,14 +27,14 @@ class DetailView(generic.DetailView):
     model = Album
     template_name = 'music/detail.html'
 
-class AlbumCreate(CreateView):
-    model = Album
-    fields = ['artist', 'album_title', 'genre', 'album_logo']
-
-class AlbumUpdate(UpdateView):
-    model = Album
-    fields = ['artist', 'album_title', 'genre', 'album_logo']
-
-class AlbumDelete(DeleteView):
-    model = Album
-    success_url = reverse_lazy('music:index')
+# class AlbumCreate(CreateView):
+#     model = Album
+#     fields = ['artist', 'album_title', 'genre', 'album_logo']
+#
+# class AlbumUpdate(UpdateView):
+#     model = Album
+#     fields = ['artist', 'album_title', 'genre', 'album_logo']
+#
+# class AlbumDelete(DeleteView):
+#     model = Album
+#     success_url = reverse_lazy('music:index')

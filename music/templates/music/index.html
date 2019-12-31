@@ -1,23 +1,105 @@
 {% extends 'music/base.html' %}
 
 {% block body %}
-
+                        <a id="album-add-btn" class="btn batch-delete-btn pull-right text-green icon-btn"
+                               data-toggle="tooltip" data-placement="bottom" title="Add Album" onclick="album_add()"><i class="fa fa-plus"></i>
+                             Add Album
+                        </a>
     <ul>
         {% for album in object_list %}
             <li><a href="{% url 'music:detail' album.id%}">{{ album.album_title }}</a></li>
-            <form action="{% url 'music:album-delete' album.id %}" method="post" style="display: inline;">
-                {% csrf_token %}
-                <input type="hidden" name="album_id" value="{{ alnum.id }}"/>
-                <button type="submit" class="btn btn-default btn-sm">
-                    <span class="icon-trash">Delete</span>
-                </button>
-            </form>
+
         {% endfor %}
     </ul>
+
+<div class="modal fade" id="album-add-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" align="center">Add Album</h4>
+            </div>
+            <form role="form" id="album-add-form" action="" method="post" enctype="multipart/form-data"
+                          data-parsley-validate>
+                <div class="form-group very-compact-form-group col-md-4">
+                <input type="text" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body">
+                        <div class="row col-md-12 new-border-box">
+                            <div class="row col-md-12">
+                                <div class="form-group very-compact-form-group col-md-4">
+                                    <label style="font-family: Kalpurush">Artist</label>
+                                    <div class="">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <input type="text" class="form-control" name="artist"
+                                               data-parsley-pattern="/^[-@./#&+\w\s]*$/"
+{#                                                       data-required-message="This field is required"#}
+                                               data-parsley-error-message="This field should be English only"
+                                               data-parsley-errors-container="#first_name_error"
+{#                                                       data-parsley-required=""#}>
+                                    </div>
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-4">
+                                    <label style="font-family: Kalpurush">Album title</label>
+                                    <div class="">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <input type="text" class="form-control" name="album_title"
+                                               data-parsley-pattern="/^[-@./#&+\w\s]*$/"
+{#                                                       data-required-message="This field is required"#}
+                                               data-parsley-error-message="This field should be English only"
+                                               data-parsley-errors-container="#first_name_error"
+{#                                                       data-parsley-required=""#}>
+                                    </div>
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-4">
+                                    <label style="font-family: Kalpurush">Genre</label>
+                                    <div class="">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <input type="text" class="form-control" name="genre"
+                                               data-parsley-pattern="/^[-@./#&+\w\s]*$/"
+{#                                                       data-required-message="This field is required"#}
+                                               data-parsley-error-message="This field should be English only"
+                                               data-parsley-errors-container="#first_name_error"
+{#                                                       data-parsley-required=""#}>
+                                    </div>
+                                </div>
+                                <div class="form-group very-compact-form-group col-md-4">
+                                    <label style="font-family: Kalpurush">Album logo</label>
+                                    <div class="">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <input type="text" class="form-control" name="album_logo"
+                                               data-parsley-pattern="/^[-@./#&+\w\s]*$/"
+{#                                                       data-required-message="This field is required"#}
+                                               data-parsley-error-message="This field should be English only"
+                                               data-parsley-errors-container="#first_name_error"
+{#                                                       data-parsley-required=""#}>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                            <div class="pull-right col-md-12">
+                                <button type="button" class="btn custom-submit-btn" onclick="album_add_submit()">Submit</button>
+                            </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% load static %}
 <script type = "text/javascript" src = "{% static 'music/js/index.js' %}"></script>
-<script>
-    console.log("This is inside index html file !");
-    init_index();
-</script>
+
+
 {% endblock %}
