@@ -14,5 +14,10 @@
             </form>
         {% endfor %}
     </ul>
-
+{% load static %}
+<script type = "text/javascript" src = "{% static 'music/js/index.js' %}"></script>
+<script>
+    console.log("This is inside index html file !");
+    init_index();
+</script>
 {% endblock %}

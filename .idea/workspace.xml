@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ef0ef77f-af92-405b-9afa-319406f8e4b3" name="Default Changelist" comment="" />
+    <list default="true" id="ef0ef77f-af92-405b-9afa-319406f8e4b3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/music/static/music/js/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/music/templates/music/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/music/templates/music/index.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,7 +18,11 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1VRC88RxZLInvYxiV6FFMM1D5OK" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -23,6 +31,7 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -68,13 +77,21 @@
       <screen x="67" y="27" width="1299" height="741" />
     </state>
     <state x="205" y="31" key="SettingsEditor/67.27.1299.741@67.27.1299.741" timestamp="1577435005377" />
-    <state x="372" y="224" key="com.intellij.ide.util.TipDialog" timestamp="1577662103219">
+    <state x="311" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1577782458160">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
-    <state x="372" y="224" key="com.intellij.ide.util.TipDialog/67.27.1299.741@67.27.1299.741" timestamp="1577662103219" />
+    <state x="311" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2/67.27.1299.741@67.27.1299.741" timestamp="1577782458160" />
+    <state x="372" y="224" key="com.intellij.ide.util.TipDialog" timestamp="1577782382419">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="372" y="224" key="com.intellij.ide.util.TipDialog/67.27.1299.741@67.27.1299.741" timestamp="1577782382419" />
     <state x="363" y="127" width="707" height="538" key="find.popup" timestamp="1577393958704">
       <screen x="67" y="27" width="1299" height="741" />
     </state>
     <state x="363" y="127" width="707" height="538" key="find.popup/67.27.1299.741@67.27.1299.741" timestamp="1577393958704" />
+    <state x="391" y="190" width="640" height="413" key="git4idea.merge.GitPullDialog" timestamp="1577782443676">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="391" y="190" width="640" height="413" key="git4idea.merge.GitPullDialog/67.27.1299.741@67.27.1299.741" timestamp="1577782443676" />
   </component>
 </project>
